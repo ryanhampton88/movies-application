@@ -6,13 +6,6 @@ import {
 } from "./movie-utils.js"
 
 
-const userTitleInput = document.getElementById("user-title");
-const userRatingInput = document.getElementById("user-rating");
-
-
-
-
-
 //////// MAIN METHOD
 (async () => {
     /////
@@ -27,15 +20,12 @@ const userRatingInput = document.getElementById("user-rating");
     }
 
 
+        let localMovies = await getLocalMovie()
+        localMovies.forEach((localMovie) => {
+            renderMovie(localMovie)
+        })
 
-
-    let localMovies = await getLocalMovie()
-    localMovies.forEach((localMovie) => {
-        renderMovie(localMovie)
-    })
-
-
-    addMovie()
+    addMovie();
 
 
     /////////
