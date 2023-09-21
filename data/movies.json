@@ -2,8 +2,59 @@
   "movies": [
     {
       "id": 1,
-      "title": "Shrek",
-      "rating": 5
+      "Title": "Shrek",
+      "Ratings": 5,
+      "Genre": "",
+      "Plot": ""
+    },
+    {
+      "Title": "Jess and Ryan's Code",
+      "Ratings": 5,
+      "Genre": "",
+      "Plot": "",
+      "id": 2
+    },
+    {
+      "title": "Jess and Ryan's Code",
+      "Ratings": 5,
+      "Genre": "",
+      "Plot": "",
+      "id": 3
+    },
+    {
+      "title": "Jess and Ryan's Code",
+      "Ratings": 5,
+      "Genre": "",
+      "Plot": "",
+      "id": 4
+    },
+    {
+      "title": "Jess and Ryan's Code",
+      "Ratings": 5,
+      "Genre": "",
+      "Plot": "",
+      "id": 5
+    },
+    {
+      "title": "Jess and Ryan's Code",
+      "Ratings": 5,
+      "Genre": "",
+      "Plot": "",
+      "id": 6
+    },
+    {
+      "title": "Jess and Ryan's Code",
+      "Ratings": 5,
+      "Genre": "",
+      "Plot": "",
+      "id": 7
+    },
+    {
+      "title": "Jess and Ryan's Code",
+      "Ratings": 5,
+      "Genre": "",
+      "Plot": "",
+      "id": 8
     }
   ]
 }
