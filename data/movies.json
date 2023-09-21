@@ -8,53 +8,39 @@
       "Plot": ""
     },
     {
-      "Title": "Jess and Ryan's Code",
-      "Ratings": 5,
-      "Genre": "",
-      "Plot": "",
-      "id": 2
+      "id": 2,
+      "Title": "42",
+      "Ratings": 10,
+      "Genre": "Sports",
+      "Plot": "Baseball stuff"
     },
     {
-      "title": "Jess and Ryan's Code",
-      "Ratings": 5,
-      "Genre": "",
-      "Plot": "",
-      "id": 3
+      "id": 3,
+      "Title": "Pretty in Pink",
+      "Ratings": 9,
+      "Genre": "whatever",
+      "Plot": "things"
     },
     {
-      "title": "Jess and Ryan's Code",
-      "Ratings": 5,
+      "Title": "101 Dalmations",
+      "Ratings": "3",
       "Genre": "",
       "Plot": "",
       "id": 4
     },
     {
-      "title": "Jess and Ryan's Code",
-      "Ratings": 5,
+      "Title": "title",
+      "Ratings": "10",
       "Genre": "",
       "Plot": "",
       "id": 5
     },
     {
-      "title": "Jess and Ryan's Code",
-      "Ratings": 5,
+      "Title": "title 2",
+      "Ratings": "5",
       "Genre": "",
       "Plot": "",
       "id": 6
-    },
-    {
-      "title": "Jess and Ryan's Code",
-      "Ratings": 5,
-      "Genre": "",
-      "Plot": "",
-      "id": 7
-    },
-    {
-      "title": "Jess and Ryan's Code",
-      "Ratings": 5,
-      "Genre": "",
-      "Plot": "",
-      "id": 8
     }
   ]
 }
