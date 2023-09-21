@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db": "json-server -d1200 --watch data/movies.json"
+    "start": "json-server -d1200 --watch data/movies.json"
   },
   "keywords": [],
   "author": "",
