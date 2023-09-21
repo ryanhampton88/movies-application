@@ -2,7 +2,8 @@ import {
     OMDB_KEY
 } from "./keys.js"
 
-
+const userTitleInput = document.getElementById("user-title");
+const userRatingInput = document.getElementById("user-rating");
 const addMovieButton = document.getElementById("add-movie-button");
 
 /////////////////Gets a movie from the OMDB API, takes a string as an input, return 1 movie object////////////////
@@ -77,7 +78,9 @@ const patchMovie = async (movie) => {
         };
         const response = await fetch(url, options);
         const newId = await response.json();
+        // location.reload();
         return newId;
+
     } catch (error) {
         console.log(error);
         return null;
@@ -96,21 +99,20 @@ const renderModal = (movie, action) => {
             </div>
             <div class="modal-body">
                 <form class="modal-form" id="movie-form">
-                    <label for="title">
+                    <label for="Title">
                         <span>Title</span>
-                        <input required type="text" name="title" id="title" value="${movie?.Title ? movie.Title : ""}" />
+                        <input type="text" name="Title" id="title" value="${movie?.Title ? movie.Title : ""}" />
                     </label>
-                    <label for="year">
-                        <span>Year</span>
-                        <input required type="number" name="year" id="year" value="${movie?.Ratings ? movie.Ratings : ""}" />
-                    </label>
-                    <label for="description">
-                        <span>Description</span>
-                        <textarea required name="description" id="description">${movie?.Genre ? movie.Genre : ""}</textarea>
-                    </label>
-                    <label for="rating">
+                    <label for="Ratings">
                         <span>Rating</span>
-                        <input required type="number" name="rating" id="rating" value="${movie?.Plot ? movie.Plot : ""}" />
+                        <input required type="number" name="Ratings" id="year" value="${movie?.Ratings ? movie.Ratings : ""}" />
+                    </label>
+                    <label for="id">
+                        <input hidden required type="number" name="id" id="year" value="${movie?.id ? movie.id : ""}" />
+                    </label>
+                    <label for="Genre">
+                        <span>Genre</span>
+                        <textarea name="Genre" id="description">${movie?.Genre ? movie.Genre : ""}</textarea>
                     </label>
                     <div class="modal-form-actions">
                         <button type="submit" class="btn btn-cta" data-action="${action}">${action}</button>
@@ -140,11 +142,22 @@ const renderModal = (movie, action) => {
         modal.remove();
     });
     // add event listener to the save btn
-    modalFormSave?.addEventListener("click", async (e) => {
+    modalForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        let updatedMovieData = new FormData(modalForm, modalFormSave);
+        let updatedMovieObj = Object.fromEntries(updatedMovieData);
+        console.log(updatedMovieObj);
+
         // TODO: if the form is valid, grab the form data and create a new movie object
-        // REMEMBER, you still have access to the book object here because it was passed as a parameter
-       postMovie(movie)
+        // REMEMBER, you still have access to the movie object here because it was passed as a parameter
+
+       let updatedMovie = await patchMovie(updatedMovieObj)
+       console.log(updatedMovie);
+       let refreshedMovies = await getLocalMovie();
+       refreshedMovies.forEach((movie) => {
+           renderMovie(movie);
+       })
         alert(`Save button clicked for ${movie.Title}`);
         modal.remove();
     });
@@ -166,37 +179,33 @@ const renderMovie = (movie) => {
 
     const movieCard = document.createElement("div");
     const movieDisplay = document.getElementById("display-movies");
-    // movieCard.classList.add("movie-");
+    movieCard.classList.add("movie-card");
     movieCard.innerHTML = `
                         <div class="movie-card-title">${movie.Title}<div>
                         <p class="movie-card-ratings">${movie.Ratings}</p>
                         <p class="movie-card-genre">${movie.Genre}</p>
-                        <span class="book-card-plot">${movie.Plot}</span>
-                        <div class="movie-card-actions-menu">
-                       <div class="movie-card-action" data-action="edit">Edit</div>
-                      <div class="movie-card-action" data-action="delete">Delete</div>
+                        <span class="movie-card-plot">${movie.Plot}</span>       
+                        <div class="movie-card-actions">
+                            <div class="movie-card-actions-toggle">
+                                <svg width="15" height="15" viewBox="0 0 1200 1200">
+                                    <g fill="currentColor">
+                                        <path d="m700 200c0-55.227-44.77-100-100-100s-100 44.773-100 100 44.77 100 100 100 100-44.773 100-100z"/>
+                                        <path d="m600 500c55.23 0 100 44.77 100 100s-44.77 100-100 100-100-44.77-100-100 44.77-100 100-100z"/>
+                                        <path d="m600 900c55.23 0 100 44.77 100 100s-44.77 100-100 100-100-44.77-100-100 44.77-100 100-100z"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="movie-card-actions-menu">
+                                <div class="movie-card-action" data-action="edit">Edit</div>
+                                <div class="movie-card-action" data-action="delete">Delete</div>
+                            </div>
                         </div>
-                       
-        <div class="movie-card-actions">
-            <div class="movie-card-actions-toggle">
-                <svg width="15" height="15" viewBox="0 0 1200 1200">
-                    <g fill="currentColor">
-                        <path d="m700 200c0-55.227-44.77-100-100-100s-100 44.773-100 100 44.77 100 100 100 100-44.773 100-100z"/>
-                        <path d="m600 500c55.23 0 100 44.77 100 100s-44.77 100-100 100-100-44.77-100-100 44.77-100 100-100z"/>
-                        <path d="m600 900c55.23 0 100 44.77 100 100s-44.77 100-100 100-100-44.77-100-100 44.77-100 100-100z"/>
-                    </g>
-                </svg>
-            </div>
-            <div class="movie-card-actions-menu">
-                <div class="movie-card-action" data-action="edit">Edit</div>
-                <div class="movie-card-action" data-action="delete">Delete</div>
-            </div>
-        </div>
-    `;
+                    `;
     // grab nodes from the card for event listeners
     const actionsParent = movieCard.querySelector(".movie-card-actions");
     const actionsToggle = movieCard.querySelector(".movie-card-actions-toggle");
     const editBtn = movieCard.querySelector(".movie-card-action[data-action='edit']");
+    // const editBtn = movieCard.querySelector(".movie-card-action")
     const deleteBtn = movieCard.querySelector(".movie-card-action[data-action='delete']");
     // named event handler to close the menu if any click happens outside of it
     const handleMenuClose = (e) => {
@@ -211,6 +220,7 @@ const renderMovie = (movie) => {
         actionsParent.classList.toggle("active");
         // add event listener to the document to close the menu if any click happens outside of it
         document.addEventListener("click", handleMenuClose);
+        console.log("actionToggle");
     });
     // add event listener to the edit btn
     editBtn.addEventListener("click", async () => {
@@ -218,6 +228,7 @@ const renderMovie = (movie) => {
         // REMEMBER, you still have access to the book object here
         handleMenuClose();
         renderModal(movie, "save");
+
     });
     // add event listener to the delete btn
     deleteBtn.addEventListener("click", async () => {
@@ -225,6 +236,7 @@ const renderMovie = (movie) => {
         // REMEMBER, you still have access to the book object here
         handleMenuClose();
         alert(`Delete button clicked for ${movie.Title}`);
+        console.log("deleteButton")
     });
     // THEN append it into the DOM
     movieDisplay.appendChild(movieCard);

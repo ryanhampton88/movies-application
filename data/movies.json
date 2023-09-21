@@ -2,10 +2,10 @@
   "movies": [
     {
       "id": 1,
-      "Title": "Shrek",
-      "Ratings": 5,
-      "Genre": "",
-      "Plot": ""
+      "Title": "New MOVIEEE",
+      "Ratings": "2",
+      "Genre": "Work",
+      "Plot": "A weird animal"
     },
     {
       "id": 2,
@@ -41,6 +41,13 @@
       "Genre": "",
       "Plot": "",
       "id": 6
+    },
+    {
+      "Title": "New Movie",
+      "Ratings": "5",
+      "Genre": "",
+      "Plot": "",
+      "id": 7
     }
   ]
 }
