@@ -2,9 +2,9 @@
   "movies": [
     {
       "id": 1,
-      "Title": "New MOVIEEE",
-      "Ratings": "2",
-      "Genre": "Work",
+      "Title": "Remember the TEST",
+      "Ratings": "10",
+      "Genre": "football",
       "Plot": "A weird animal"
     },
     {
@@ -48,6 +48,13 @@
       "Genre": "",
       "Plot": "",
       "id": 7
+    },
+    {
+      "Title": "spongebob",
+      "Ratings": "7",
+      "Genre": "",
+      "Plot": "",
+      "id": 8
     }
   ]
 }

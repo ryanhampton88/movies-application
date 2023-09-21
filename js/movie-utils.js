@@ -7,6 +7,7 @@ const userRatingInput = document.getElementById("user-rating");
 const addMovieButton = document.getElementById("add-movie-button");
 
 /////////////////Gets a movie from the OMDB API, takes a string as an input, return 1 movie object////////////////
+
 const getMovie = async (title) => {
     const url = `http://www.omdbapi.com/?apikey=${OMDB_KEY}&t=${title}`;
     const options = {
@@ -78,7 +79,7 @@ const patchMovie = async (movie) => {
         };
         const response = await fetch(url, options);
         const newId = await response.json();
-        // location.reload();
+        location.reload();
         return newId;
 
     } catch (error) {
@@ -184,7 +185,8 @@ const renderMovie = (movie) => {
                         <div class="movie-card-title">${movie.Title}<div>
                         <p class="movie-card-ratings">${movie.Ratings}</p>
                         <p class="movie-card-genre">${movie.Genre}</p>
-                        <span class="movie-card-plot">${movie.Plot}</span>       
+                        <span class="movie-card-plot">${movie.Plot}</span> 
+                        <img src="${movie.Poster}"/>      
                         <div class="movie-card-actions">
                             <div class="movie-card-actions-toggle">
                                 <svg width="15" height="15" viewBox="0 0 1200 1200">

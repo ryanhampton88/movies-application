@@ -6,11 +6,15 @@ import {
 } from "./movie-utils.js"
 
 
+
 //////// MAIN METHOD
 (async () => {
+
+
     /////
     const movie = await getMovie("avatar");
     console.log(movie);
+    renderMovie(movie)
 
     const newMovie = {
         "title": "Jess and Ryan's Code",
@@ -19,11 +23,10 @@ import {
         "Plot": ""
     }
 
-
-        let localMovies = await getLocalMovie()
-        localMovies.forEach((localMovie) => {
-            renderMovie(localMovie)
-        })
+    let localMovies = await getLocalMovie()
+    localMovies.forEach((localMovie) => {
+        renderMovie(localMovie)
+    })
 
     addMovie();
 
