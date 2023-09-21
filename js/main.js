@@ -1,28 +1,15 @@
 import {
     getMovie,
-    postMovie
+    postMovie,
+    getLocalMovie,
+    renderMovie
 } from "./movie-utils.js"
 
 
-const renderMovie = (movie) => {
-    const movieCard = document.createElement("div");
-    // movieCard.classList.add("movie-");
-    movieCard.innerHTML = `
-                        <div class="movie-card-title">${movie.Title}<div>
-                        <p class="movie-card-ratings">${movie.Ratings}</p>
-                        <p class="movie-card-genre">${movie.Genre}</p>
-                        <span class="book-card-plot">${movie.Plot}</span>
-                        <button>DELETE</button>
-                        `
-    const movieDisplay = document.getElementById("display-movies");
+const userTitleInput = document.getElementById("user-title");
+const userRatingInput = document.getElementById("user-rating");
+const addMovieButton = document.getElementById("add-movie-button");
 
-    // const editBtn = movieCard.querySelector("button");
-    // editBtn.addEventListener("click", async () => {
-    //     //     DO THE THANG!
-    // });
-    movieDisplay.appendChild(movieCard);
-
-}
 
 
 //////// MAIN METHOD
@@ -38,10 +25,31 @@ const renderMovie = (movie) => {
         "Plot": ""
     }
 
-    let postNewMovie = await postMovie(newMovie);
-    console.log(postNewMovie);
+
 
     renderMovie(movie);
+
+    let localMovies = await getLocalMovie()
+    console.log(localMovies);
+    localMovies.forEach((localMovie) => {
+        renderMovie(localMovie)
+    })
+
+    addMovieButton.addEventListener("click", function() {
+        let newTitle = userTitleInput.value
+        console.log(newTitle);
+        let newRating = userRatingInput.value
+        console.log(newRating);
+        let newMovieObj = {
+            "Title": `${newTitle}`,
+            "Ratings": `${newRating}`,
+            "Genre": "",
+            "Plot": ""
+        }
+        postMovie(newMovieObj)
+
+    })
+
 
     /////////
 })();

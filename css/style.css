@@ -1,0 +1,133 @@
+@import "resets.css";
+@import "layout.css";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+    --primary-color: #769e48;
+    --grey: #e8e9eb;
+    --bg-color: #f8f8f8;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    height: 100%;
+    background-color: var(--bg-color);
+}
+
+header.container {
+    padding: 20px 0;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.logo span {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.container.cat-tags .column {
+    border-bottom: 1px solid #e8e9eb;
+}
+
+ul.cat-tab-menu {
+    display: flex;
+    align-items: stretch;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.cat-tab-menu li {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 2px solid transparent;
+    gap: 8px;
+    cursor: pointer;
+    transition: all ease 0.3s;
+    color: #8a9099;
+}
+
+ul.cat-tab-menu li.active {
+    border-bottom-color: var(--primary-color);
+    color: #000;
+}
+
+ul.cat-tab-menu li span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: var(--grey);
+    border-radius: 3px;
+}
+
+.books-grid {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: start;
+    margin: 20px 0;
+}
+
+.book-card {
+    min-height: 272px;
+    border-radius: 20px;
+    background-color: #fff;
+    width: calc(33.333% - 20px);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.book-card-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.book-card-year {
+    font-size: 14px;
+    font-weight: 400;
+    color: #595f69;
+}
+
+.book-card-description {
+    font-size: 14px;
+    font-weight: 400;
+    color: #595f69;
+    margin-bottom: 10px;
+    max-height: 65px;
+    overflow: hidden;
+    flex: 1 0 65px;
+}
+
+.book-card-span, .book-card-rating {
+    font-size: 14px;
+    font-weight: 400;
+    color: #595f69;
+}
+
+.book-card-meter {
+    width: 100%;
+}
+
+.book-card-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 20px;
+    border-radius: 8px;
+    background-color: var(--bg-color);
+}

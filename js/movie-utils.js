@@ -14,6 +14,19 @@ const getMovie = async (title) => {
     return movie;
 }
 
+const getLocalMovie = async () => {
+    const url = `http://localhost:3000/movies`;
+    const options = {
+        "method": "GET",
+        "headers": {
+        }
+    }
+
+    const response = await fetch(url, options);
+    const localMovies = await response.json();
+    return localMovies;
+}
+
 const postMovie = async (movie) => {
     // try {
     // //todo: validate book isn't already in the database
@@ -34,6 +47,7 @@ const postMovie = async (movie) => {
     };
     const response = await fetch(url, options);
     const newId = await response.json();
+    renderMovie(newId)
     return newId;
     // } catch (error) {
     //     console.log(error);
@@ -41,4 +55,25 @@ const postMovie = async (movie) => {
     // }
 }
 
-export {getMovie, postMovie}
+const renderMovie = (movie) => {
+    const movieCard = document.createElement("div");
+    // movieCard.classList.add("movie-");
+    movieCard.innerHTML = `
+                        <div class="movie-card-title">${movie.Title}<div>
+                        <p class="movie-card-ratings">${movie.Ratings}</p>
+                        <p class="movie-card-genre">${movie.Genre}</p>
+                        <span class="book-card-plot">${movie.Plot}</span>
+                        <button>DELETE</button>
+                        `
+    const movieDisplay = document.getElementById("display-movies");
+
+    // const editBtn = movieCard.querySelector("button");
+    // editBtn.addEventListener("click", async () => {
+    //     //     DO THE THANG!
+    // });
+    movieDisplay.appendChild(movieCard);
+
+}
+
+
+export {getMovie, postMovie, getLocalMovie, renderMovie}

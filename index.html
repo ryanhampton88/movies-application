@@ -1,21 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+
+<head lang="en">
   <meta charset="UTF-8">
-  <title>Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-<form>
-  <input type="text" placeholder="Enter Title..">
-  <input type="text" placeholder="Rating..">
-  <button type="submit"></button>
-</form>
+<div class="page-wrapper">
+  <header class="container">
+    <div class="row">
+      <div class="column flex-shrink">
+        <div class="logo">
+           Movies App
+        </div>
+      </div>
+    </div>
+  </header>
+  <section class="container cat-tags">
+    <div class="row">
+      <div class="column">
+        <ul class="cat-tab-menu">
+          <li class="active">
+            <div>All</div>
+            <span>32</span>
+<!--          </li>-->
+<!--          <li>-->
+<!--            <div>Fiction</div>-->
+<!--            <span>8</span>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <div>Novels</div>-->
+<!--            <span>12</span>-->
+<!--          </li>-->
+        </ul>
+      </div>
+      <div class="column flex-shrink justify-content-center">
+        <input id="user-title" type="text" placeholder="Enter Title..">
+        <input id="user-rating" type="text" placeholder="Rating..">
+        <button type="submit"></button>
+        </form>
+        <button class="btn btn-cta" id="add-movie-button">Add Movie</button>
+      </div>
+    </div>
+  </section>
+  <section class="container">
+    <div class="row">
+      <div id="display-movies">
 
-<div id="display-movies">
 
-
+      </div>
+    </div>
+  </section>
 </div>
-
-<script type=module src="./js/main.js"></script>
+<!-- MAIN -->
+<script type="module" src="js/main.js"></script>
 </body>
-</html>
