@@ -1,0 +1,218 @@
+@import "resets.css";
+@import "layout.css";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+:root {
+    --primary-color: #769E48;
+    --grey: #E8E9EB;
+    --dark-grey: #595F69;
+    --bg-color: #F8F8F8;
+}
+body {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    height: 100%;
+    background-color: var(--bg-color);
+}
+header.container {
+    padding: 20px 0;
+}
+.logo {
+    font-size: 28px;
+    font-weight: 500;
+}
+.logo span {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+.container.cat-tags .column {
+    border-bottom: 1px solid #E8E9EB;
+}
+ul.cat-tab-menu {
+    display: flex;
+    align-items: stretch;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+ul.cat-tab-menu li {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 2px solid transparent;
+    gap: 8px;
+    cursor: pointer;
+    transition: all ease 0.3s;
+    color: #8A9099;
+}
+ul.cat-tab-menu li.active {
+    border-bottom-color: var(--primary-color);
+    color: #000;
+}
+ul.cat-tab-menu li span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: var(--grey);
+    border-radius: 3px;
+}
+#display-movies {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: start;
+    margin: 20px 0;
+}
+.movie-card {
+    min-height: 272px;
+    border-radius: 20px;
+    background-color: #fff;
+    width: calc(33.333% - 20px);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.movie-card-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-right: 30px;
+}
+.movie-card-year {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--dark-grey);
+    margin-bottom: 10px;
+}
+.movie-card-description {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--dark-grey);
+    margin-bottom: 10px;
+    max-height: 65px;
+    overflow: hidden;
+    flex: 1 0 65px;
+}
+.movie-card-span,
+.movie-card-rating {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--dark-grey);
+}
+.movie-card-meter {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.movie-card-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 20px;
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    font-size: 12px;
+}
+.movie-card-actions {
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.movie-card-actions-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    transition: all ease 0.3s;
+    cursor: pointer;
+&:hover {
+     background-color: var(--grey);
+ }
+}
+.movie-card-actions-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 225px;
+    border-radius: 14px;
+    background-color: #fff;
+    filter: drop-shadow(0px 20px 50px rgba(44, 63, 88, 0.15));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all ease 0.3s;
+    transform: translateY(30%);
+    opacity: 0;
+    pointer-events: none;
+}
+.movie-card-actions.active .movie-card-actions-menu {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+}
+.movie-card-action {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all ease 0.3s;
+&:hover {
+     background-color: var(--grey);
+ }
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all ease 0.3s;
+    z-index: 100;
+}
+.modal-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #fff;
+    transition: all ease 0.3s;
+}
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all ease 0.3s;
+&:hover {
+     background-color: var(--grey);
+ }
+}
