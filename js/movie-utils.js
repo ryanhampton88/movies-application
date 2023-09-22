@@ -1,15 +1,35 @@
 import {
-    OMDB_KEY
-} from "./keys.js"
+    OMDB_KEY, TMDB_KEY
+} from "./keys.js";
+import {strToStandardCase} from "./js-utils.js"
 
 const userTitleInput = document.getElementById("user-title");
 const userRatingInput = document.getElementById("user-rating");
 const addMovieButton = document.getElementById("add-movie-button");
 
-/////////////////Gets a movie from the OMDB API, takes a string as an input, return 1 movie object////////////////
 
+
+/////////////////Gets a movie from the OMDB API, takes a string as an input, return 1 movie object////////////////
 const getMovie = async (title) => {
     const url = `http://www.omdbapi.com/?apikey=${OMDB_KEY}&t=${title}`;
+    const options = {
+        "method": "GET",
+        "headers": {}
+    }
+
+    const response = await fetch(url, options);
+    const movie = await response.json();
+    return movie;
+}
+
+
+/////////takes user input and appends to URL, makes get request, if valid, grabs movie data, and passes it through postMovie /////////
+const searchMovie = async () => {
+    let newTitle = userTitleInput.value
+    let newRating = userRatingInput.value
+
+
+    const url = `http://www.omdbapi.com/?apikey=${OMDB_KEY}&t=${strToStandardCase(newTitle)}`;
     const options = {
         "method": "GET",
         "headers": {
@@ -18,8 +38,17 @@ const getMovie = async (title) => {
 
     const response = await fetch(url, options);
     const movie = await response.json();
-    return movie;
-}
+    console.log(movie);;
+
+    if (movie.Error === "Movie not found!") {
+        console.log("Movie not found")
+        return;
+    } else {
+        console.log("match!")
+        postMovie(movie)
+        }
+    }
+
 
 
 /////////////////Returns all movies from our local DB, returns the array of movie objects////////////////
@@ -37,18 +66,42 @@ const getLocalMovie = async () => {
 }
 
 
+
+///////checks to see if movie already exists in DB before posting it to DB///////////
+const searchMovieByTitle = async (title) => {
+    const url = `http://localhost:3000/movies?Title=${title}`;
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+    const response = await fetch(url, options);
+    const movie = await response.json();
+    return movie;
+};
+
 ////////////////takes in a Movie object as an argument, then posts the object to the local DB, then renders in on screen////////////
 const postMovie = async (movie) => {
-    // try {
-    // //todo: validate book isn't already in the database
-    // const searchResult = await searchBookByTitle(book.title);
-    // if (searchResult.length > 0) {
-    //     //book already exists
-    //     // throw error
-    //     throw new Error("Book already exists in the database");
-    // }
+    try {
+    // //todo: validate movie isn't already in the database
+    const searchResult = await searchMovieByTitle(movie.Title);
+    if (searchResult.length > 0) {
+        //movie already exists
+        // throw error
+        throw new Error("Movie already exists in the database");
+    }
+    let rating = movie.Ratings[0].Value;
+    const movieRating = rating.split("/")[0]
+    let newMovie = {
+        "Title": `${movie.Title}`,
+        "Ratings": `${movieRating}`,
+        "Genre": `${movie.Genre}`,
+        "Plot": `${movie.Plot}`,
+        "Poster": `${movie.Poster}`
+    }
     const url = `http://localhost:3000/movies`;
-    const body = movie;
+    const body = newMovie;
     const options = {
         method: "POST",
         headers: {
@@ -60,11 +113,29 @@ const postMovie = async (movie) => {
     const newId = await response.json();
     renderMovie(newId)
     return newId;
-    // } catch (error) {
-    //     console.log(error);
-    //     return null;
-    // }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 }
+
+
+//TODO: no longer nexessary, pulling movie info from API now
+//////////takes user input and converts it into an object, then passes it to postMovie function to add it to the DB////////////
+// function addMovie() {
+//     addMovieButton.addEventListener("click", function() {
+//
+//         let newTitle = userTitleInput.value
+//         let newRating = userRatingInput.value
+//         let newMovieObj = {
+//             "Title": `${strToStandardCase(newTitle)}`,
+//             "Ratings": `${newRating}`,
+//             "Genre": "",
+//             "Plot": ""
+//         }
+//         postMovie(newMovieObj)
+//     })
+// }
 
 const patchMovie = async (movie) => {
     try {
@@ -123,6 +194,7 @@ const renderModal = (movie, action) => {
             </div>
         </div>
     `;
+
     // grab nodes from the modal for event listeners
     const modalClose = modal.querySelector(".modal-close");
     const modalBg = modal.querySelector(".modal-bg");
@@ -162,28 +234,20 @@ const renderModal = (movie, action) => {
         alert(`Save button clicked for ${movie.Title}`);
         modal.remove();
     });
-    // add event listener to the create btn
-    // modalFormCreate?.addEventListener("click", async (e) => {
-    //     e.preventDefault();
-    //     // validate the form data with the native javascript form validation
-    //     // TODO: if the form is valid, grab the form data and create a new book object
-    //     // REMEMBER, you still have access to the book object here because it was passed as a parameter
-    //     // REMEMBER, the categories are a string of comma separated values, so you'll need to split them into an array
-    //     alert(`Save button clicked for ${book.title}`);
-    //     modal.remove();
 
     // THEN append it into the DOM
     document.body.appendChild(modal);
 };
 
 const renderMovie = (movie) => {
-
+    // localMovie.Ratings.split("/")[0]
+    // const movieRatings = catchRating.split("/")
     const movieCard = document.createElement("div");
     const movieDisplay = document.getElementById("display-movies");
     movieCard.classList.add("movie-card");
     movieCard.innerHTML = `
                         <div class="movie-card-title">${movie.Title}<div>
-                        <p class="movie-card-ratings">${movie.Ratings}</p>
+                        <p class="movie-card-ratings">${movie.Ratings}/10</p>
                         <p class="movie-card-genre">${movie.Genre}</p>
                         <span class="movie-card-plot">${movie.Plot}</span> 
                         <img src="${movie.Poster}"/>      
@@ -237,7 +301,8 @@ const renderMovie = (movie) => {
         // TODO: add delete functionality
         // REMEMBER, you still have access to the book object here
         handleMenuClose();
-        alert(`Delete button clicked for ${movie.Title}`);
+        alert(`${movie.Title} was deleted.`);
+        movieCard.remove()
         console.log("deleteButton")
     });
     // THEN append it into the DOM
@@ -246,56 +311,8 @@ const renderMovie = (movie) => {
 
 
 
-/////////////renders the movies on screen, takes a movie object as an argument and builds the HTML based on specified properties
-// const renderMovie = (movie) => {
-//     const movieCard = document.createElement("div");
-//     // movieCard.classList.add("movie-");
-//     movieCard.innerHTML = `
-//                         <div class="movie-card-title">${movie.Title}<div>
-//                         <p class="movie-card-ratings">${movie.Ratings}</p>
-//                         <p class="movie-card-genre">${movie.Genre}</p>
-//                         <span class="book-card-plot">${movie.Plot}</span>
-//                         <div class="book-card-actions-menu">
-//                         <button id="delete-button">DELETE</button>
-//                         <button id="edit-button">EDIT</button>
-//                         </div>
-//
-//                         `
-//     const movieDisplay = document.getElementById("display-movies");
-//
-//     const deleteBtn = movieCard.querySelector("#delete-button");
-//     const editBtn = movieCard.querySelector("#edit-button");
-//     editBtn.addEventListener("click", async () => {
-//         console.log(movie);
-//         patchMovie(movie)
-//     });
 
-
-
-
-
-
-
-//////////takes user input and adds new movie to local DB when add movie button is clicked ////////////
-function addMovie() {
-    addMovieButton.addEventListener("click", function() {
-        let newTitle = userTitleInput.value
-        console.log(newTitle);
-        let newRating = userRatingInput.value
-        console.log(newRating);
-        let newMovieObj = {
-            "Title": `${newTitle}`,
-            "Ratings": `${newRating}`,
-            "Genre": "",
-            "Plot": ""
-        }
-        postMovie(newMovieObj)
-    })
-
-}
-
-
-export {getMovie, postMovie, getLocalMovie, renderMovie, addMovie}
+export {getMovie, postMovie, getLocalMovie, renderMovie, searchMovie}
 
 //TODO: add button that makes the html editable
 //allow user to edit
