@@ -1,17 +1,20 @@
 import {
     getLocalMovie, searchMovie
 } from "./movie-utils.js";
-import {strToStandardCase} from "./js-utils.js";
+
 
 
 const addMovieButton = document.getElementById("add-movie-button");
 //////// MAIN METHOD/////////
 (async () => {
 
-    getLocalMovie();
+    await getLocalMovie();
 
 
-    addMovieButton.addEventListener("click", () => searchMovie())
+    // addMovieButton.addEventListener("click", () => searchMovie())
+    addMovieButton.addEventListener("click", () => {
+        console.log("CLICKKKKKKK")
+    })
 
 
 })();

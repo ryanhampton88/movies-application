@@ -5,7 +5,6 @@ import {strToStandardCase} from "./js-utils.js"
 
 const userTitleInput = document.getElementById("user-title");
 const userRatingInput = document.getElementById("user-rating");
-const addMovieButton = document.getElementById("add-movie-button");
 const loading = document.getElementById("display-movies");
 const loadingS = document.createElement("div")
 loadingS.innerHTML= `<h1>LOADING</h1>`;
@@ -27,9 +26,11 @@ const getMovie = async (title) => {
 
 
 /////////takes user input and appends to URL, makes get request, if valid, grabs movie data, and passes it through postMovie /////////
-const searchMovie = async () => {
-    let newTitle = userTitleInput.value
-    let newRating = userRatingInput.value
+const searchMovie =  async () => {
+    console.log("did this work");
+    let newTitle = userTitleInput.value;
+    let newRating = userRatingInput.value;
+    console.log(newTitle);
 
     const url = `http://www.omdbapi.com/?apikey=${OMDB_KEY}&t=${strToStandardCase(newTitle)}`;
     const options = {
@@ -179,31 +180,28 @@ const renderModal = (movie, action) => {
                 <span class="modal-close">&times;</span>
             </div>
             <div class="modal-body">
-                <form class="modal-form" id="movie-form">
-                    <label for="Title">
-                        <span>Title</span>
-                        <input type="text" name="Title" id="title" value="${movie?.Title ? movie.Title : ""}" />
-                    </label>
+                <form class="modal-form d-flex flex-column align-items-center" id="movie-form">
+                <div class="d-flex flex-column gap-2 mb-2">
                     <label for="Ratings">
-                        <span>Rating</span>
-                        <input required type="number" name="Ratings" id="year" value="${movie?.Ratings ? movie.Ratings : ""}" />
+                        Rating
+                        <input required type="number" name="Ratings" id="Rating" min="0" max="10" value="${movie?.Ratings ? movie.Ratings : ""}" />
                     </label>
                     <label for="id">
                         <input hidden required type="number" name="id" id="year" value="${movie?.id ? movie.id : ""}" />
                     </label>
-                    <label for="Genre">
-                        <span>Genre</span>
+                    <label for="Genre" class="d-flex align-items-center gap-1">
+                        Genre
                         <textarea name="Genre" id="description">${movie?.Genre ? movie.Genre : ""}</textarea>
                     </label>
+                    </div>
                     <div class="modal-form-actions">
-                        <button type="submit" class="btn btn-cta" data-action="${action}">${action}</button>
+                        <button type="submit" class="btn btn-cta btn-secondary" data-action="${action}">${action}</button>
                         <button type="button" class="btn btn-secondary" data-action="cancel">Cancel</button>
                     </div>
                 </form>
             </div>
         </div>
     `;
-
     // grab nodes from the modal for event listeners
     const modalClose = modal.querySelector(".modal-close");
     const modalBg = modal.querySelector(".modal-bg");
@@ -211,6 +209,8 @@ const renderModal = (movie, action) => {
     const modalFormCancel = modal.querySelector("[data-action='cancel']");
     const modalFormSave = modal.querySelector("[data-action='save']");
     const modalFormCreate = modal.querySelector("[data-action='create']");
+    console.log("got here")
+
     // add event listener to the close btn
     modalClose?.addEventListener("click", () => {
         modal.remove();
@@ -226,7 +226,6 @@ const renderModal = (movie, action) => {
     // add event listener to the save btn
     modalForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
-
         let updatedMovieData = new FormData(modalForm, modalFormSave);
         let updatedMovieObj = Object.fromEntries(updatedMovieData);
         console.log(updatedMovieObj);
@@ -253,29 +252,33 @@ const renderMovie = (movie) => {
     // const movieRatings = catchRating.split("/")
     const movieCard = document.createElement("div");
     const movieDisplay = document.getElementById("display-movies");
-    movieCard.classList.add("movie-card");
+    movieCard.classList.add("carousel-card");
+    movieCard.setAttribute("style", `background-image: url('${movie.Poster}')` )
     movieCard.innerHTML = `
-                        <div class="movie-card-title">${movie.Title}<div>
-                        <p class="movie-card-ratings">${movie.Ratings}/10</p>
-                        <p class="movie-card-genre">${movie.Genre}</p>
-                        <span class="movie-card-plot">${movie.Plot}</span> 
-                        <img src="${movie.Poster}"/>      
-                        <div class="movie-card-actions">
-                            <div class="movie-card-actions-toggle">
-                                <svg width="15" height="15" viewBox="0 0 1200 1200">
-                                    <g fill="currentColor">
-                                        <path d="m700 200c0-55.227-44.77-100-100-100s-100 44.773-100 100 44.77 100 100 100 100-44.773 100-100z"/>
-                                        <path d="m600 500c55.23 0 100 44.77 100 100s-44.77 100-100 100-100-44.77-100-100 44.77-100 100-100z"/>
-                                        <path d="m600 900c55.23 0 100 44.77 100 100s-44.77 100-100 100-100-44.77-100-100 44.77-100 100-100z"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="movie-card-actions-menu">
-                                <div class="movie-card-action" data-action="edit">Edit</div>
-                                <div class="movie-card-action" data-action="delete">Delete</div>
-                            </div>
-                        </div>
-                    `;
+            <div class="card-details">
+              <div class="card-header">
+                <h3 class="card-title">${movie.Title}</h3>
+                <p class="card-description">${movie.Plot}</p>
+              </div>
+              <div class="card-rating">
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+              </div>
+              <div class="card-call-to-action movie-card-actions-menu">
+                <button class="card-btn primary movie-card-action" data-action="edit" id="edit-button">Edit</button>
+                <button class="card-btn movie-card-action" data-action="delete" id="delete-button">Delete</button>
+              </div>
+            </div>    
+    `
+
+        // <div class="movie-card-actions-menu">
+    //                             <div class="movie-card-action" data-action="edit">Edit</div>
+    //                             <div class="movie-card-action" data-action="delete">Delete</div>
+    //                         </div>
+
     // grab nodes from the card for event listeners
     const actionsParent = movieCard.querySelector(".movie-card-actions");
     const actionsToggle = movieCard.querySelector(".movie-card-actions-toggle");
@@ -283,33 +286,29 @@ const renderMovie = (movie) => {
     // const editBtn = movieCard.querySelector(".movie-card-action")
     const deleteBtn = movieCard.querySelector(".movie-card-action[data-action='delete']");
     // named event handler to close the menu if any click happens outside of it
-    const handleMenuClose = (e) => {
-        // adding optional chaining to the parameter to avoid errors
-        if (!actionsParent.contains(e?.target)) {
-            actionsParent.classList.remove("active");
-            document.removeEventListener("click", handleMenuClose);
-        }
-    };
+    // const handleMenuClose = (e) => {
+    //     // adding optional chaining to the parameter to avoid errors
+    //     if (!actionsParent.contains(e?.target)) {
+    //         actionsParent.classList.remove("active");
+    //         document.removeEventListener("click", handleMenuClose);
+    //     }
+    // };
     // add event listener to the toggle
-    actionsToggle.addEventListener("click", () => {
-        actionsParent.classList.toggle("active");
-        // add event listener to the document to close the menu if any click happens outside of it
-        document.addEventListener("click", handleMenuClose);
-        console.log("actionToggle");
-    });
+    // actionsToggle.addEventListener("click", () => {
+    //     actionsParent.classList.toggle("active");
+    //     // add event listener to the document to close the menu if any click happens outside of it
+    //     document.addEventListener("click", handleMenuClose);
+    //     console.log("actionToggle");
+    // });
     // add event listener to the edit btn
     editBtn.addEventListener("click", async () => {
-        // TODO: add edit functionality
-        // REMEMBER, you still have access to the book object here
-        handleMenuClose();
+        console.log("click")
+        // handleMenuClose();
         renderModal(movie, "save");
 
     });
     // add event listener to the delete btn
     deleteBtn.addEventListener("click", async () => {
-        // TODO: add delete functionality
-        // REMEMBER, you still have access to the book object here
-        handleMenuClose();
         alert(`${movie.Title} was deleted.`);
         movieCard.remove()
         console.log("deleteButton")
