@@ -10,10 +10,10 @@ const addMovieButton = document.getElementById("add-movie-button");
 
     await getLocalMovie();
 
-
     // addMovieButton.addEventListener("click", () => searchMovie())
-    addMovieButton.addEventListener("click", () => {
-        console.log("CLICKKKKKKK")
+    addMovieButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        searchMovie();
     })
 
 
