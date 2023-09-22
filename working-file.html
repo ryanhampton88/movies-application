@@ -11,36 +11,178 @@
 
 <body>
 <div class="page-wrapper">
-  <header class="container">
+  <header class="container-fluid">
     <div class="row">
       <div class="column flex-shrink">
-        <div class="logo">
-          Movies App
+        <div>
+
         </div>
       </div>
     </div>
   </header>
-  <section class="container cat-tags">
-    <div class="row">
-      <div class="column">
-        <ul class="cat-tab-menu" id="genre-tab-menu">
-          <li class="active genre-tab">
-            <div id="all">All</div>
-          </li>
-          <li class="genre-tab">
-            <div id="action">Action</div>
-          </li>
-          <li class="genre-tab">
-            <div id="comedy">Comedy</div>
-          </li>
-          <li class="genre-tab">
-            <div id="romance">Romance</div>
-          </li>
-          <li class="genre-tab">
-            <div id="horror">Horror</div>
-          </li>
-        </ul>
+
+  <div class="jumbotron">
+    <div class="container-fluid bg-light" id="top-container" >
+      <div class="row mx-lg-4">
+        <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">Movies App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">All</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Action</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Adventure</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Comedy</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Horror</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Romance</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Documentary</a>
+                </li>
+              </ul>
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+        </nav>
+          <div class="d-flex flex-column display-3">Title!</div>
+          <div class="d-flex gap-4"><p>Rating</p> <p>Year</p> <p>Genres</p></div>
+          <div class="my-2 text wrap w-50">This is a template for a simple marketing or informational website. lsdjfajdsflaj;lsdjf;lksajfkseudafk fasdl;ijf;oidsjf;a s;ew;jf d;aslkjf l;sadjf;sdjf;sfjdjfdsjf aja
+          sildjf asdfjasdljf ;aslj f;aldsj f;laj fa;fjail;dj f</div>
+          <div><a class="btn btn-primary btn-lg" href="#" role="button">Edit &raquo;</a>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Delete &raquo;</a></div>
       </div>
+    </div>
+  </div>
+
+<!--      CAROUSEL    -->
+      <main class="carousel-container">
+        <div class="sidebar">
+          <!--     <h2>Discover</h2> -->
+          <ion-icon name="arrow-forward-circle-outline" class='icon'></ion-icon>
+        </div>
+        <section class="scrolling-carousel">
+          <div class="carousel-card" style="background-image: url('https://asiasociety.org/sites/default/files/styles/1200w/public/2019-10/Parasite.jpg')">
+            <div class="card-details">
+              <div class="card-header">
+                <h3 class="card-title">Parasite (2019)</h3>
+                <p class="card-description">Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.</p>
+              </div>
+              <div class="card-rating">
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+              </div>
+              <div class="card-call-to-action">
+                <button class="btn primary">Watch</button>
+                <button class="btn">Save</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-card" style="background-image: url('https://theplaylist.net/wp-content/uploads/2017/12/COCO-Pixar.jpg')">
+            <div class="card-details">
+              <div class="card-header">
+                <h3 class="card-title">Coco (2017)</h3>
+                <p class="card-description">Miguel pursues his love for singing in spite of his family's ban on music. He stumbles into the Land of the Dead, where he learns about his great-great-grandfather who was a legendary singer.</p>
+              </div>
+              <div class="card-rating">
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+              </div>
+              <div class="card-call-to-action">
+                <button class="btn primary">Watch</button>
+                <button class="btn">Save</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-card" style="background-image: url('https://thefailedcritic.files.wordpress.com/2014/09/shrek-2.jpg')">
+            <div class="card-details">
+              <div class="card-header">
+                <h3 class="card-title">Shrek 2 (2004)</h3>
+                <p class="card-description">Shrek and Fiona travel to the Kingdom of Far Far Away to celebrate their marriage. When they arrive, they find they are not as welcome as they thought they would be.</p>
+              </div>
+              <div class="card-rating">
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+              </div>
+              <div class="card-call-to-action">
+                <button class="btn primary">Watch</button>
+                <button class="btn">Save</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-card" style="background-image: url('https://m.media-amazon.com/images/M/MV5BM2M1NTU0ODctZmEzNC00NzdjLTkwNTktODU1YzYwNGI4MTRmXkEyXkFqcGdeQXVyMDc2NTEzMw@@._V1_.jpg')">
+            <div class="card-details">
+              <div class="card-header">
+                <h3 class="card-title">Forrest Gump (1994)</h3>
+                <p class="card-description">Forrest, a man with low IQ, recounts the early years of his life when he found himself in the middle of key historical events. All he wants now is to be reunited with his childhood sweetheart, Jenny.</p>
+              </div>
+              <div class="card-rating">
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+              </div>
+              <div class="card-call-to-action">
+                <button class="btn primary">Watch</button>
+                <button class="btn">Save</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-card" style="background-image: url('https://unbelievable-facts.com/wp-content/uploads/2017/11/Kung-Fu-Hustle-Facts.jpg')">
+            <div class="card-details">
+              <div class="card-header">
+                <h3 class="card-title">Kung Fu Hustle (2004)</h3>
+                <p class="card-description">An aspiring gangster pretends to be part of a notorious gang and tries to terrorise a neighbourhood. However, unknown to him, three martial arts experts live there and are ready to take him down.</p>
+              </div>
+              <div class="card-rating">
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+              </div>
+              <div class="card-call-to-action">
+                <button class="btn primary">Watch</button>
+                <button class="btn">Save</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+
+  <section class="container-fluid cat-tags">
+
       <div class="column flex-shrink justify-content-center">
         <input id="user-title" type="text" placeholder="Enter Title..">
         <input id="user-rating" type="number" min="0" max="10" placeholder="Rating..">
