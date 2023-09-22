@@ -6,8 +6,10 @@ import {strToStandardCase} from "./js-utils.js"
 const userTitleInput = document.getElementById("user-title");
 const userRatingInput = document.getElementById("user-rating");
 const loading = document.getElementById("display-movies");
-const loadingS = document.createElement("div")
-loadingS.innerHTML= `<h1>LOADING</h1>`;
+const loadingS = document.createElement("div");
+const bigMovieCard = document.createElement("div");
+const bigMovieDisplay = document.getElementById("big-movie-display");
+loadingS.innerHTML = `<h1>LOADING</h1>`;
 
 
 
@@ -130,22 +132,22 @@ const postMovie = async (movie) => {
 }
 
 
-//TODO: no longer nexessary, pulling movie info from API now
+//TODO: no longer necessary, pulling movie info from API now
 //////////takes user input and converts it into an object, then passes it to postMovie function to add it to the DB////////////
-// function addMovie() {
-//     addMovieButton.addEventListener("click", function() {
-//
-//         let newTitle = userTitleInput.value
-//         let newRating = userRatingInput.value
-//         let newMovieObj = {
-//             "Title": `${strToStandardCase(newTitle)}`,
-//             "Ratings": `${newRating}`,
-//             "Genre": "",
-//             "Plot": ""
-//         }
-//         postMovie(newMovieObj)
-//     })
-// }
+function addMovie() {
+    addMovieButton.addEventListener("click", function() {
+
+        let newTitle = userTitleInput.value
+        let newRating = userRatingInput.value
+        let newMovieObj = {
+            "Title": `${strToStandardCase(newTitle)}`,
+            "Ratings": `${newRating}`,
+            "Genre": "",
+            "Plot": ""
+        }
+        postMovie(newMovieObj)
+    })
+}
 
 const patchMovie = async (movie) => {
     try {
@@ -254,6 +256,7 @@ const renderMovie = (movie) => {
     const movieDisplay = document.getElementById("display-movies");
     movieCard.classList.add("carousel-card");
     movieCard.setAttribute("style", `background-image: url('${movie.Poster}')` )
+    movieCard.setAttribute("data-id", movie.id)
     movieCard.innerHTML = `
             <div class="card-details">
               <div class="card-header">
@@ -270,14 +273,21 @@ const renderMovie = (movie) => {
               <div class="card-call-to-action movie-card-actions-menu">
                 <button class="card-btn primary movie-card-action" data-action="edit" id="edit-button">Edit</button>
                 <button class="card-btn movie-card-action" data-action="delete" id="delete-button">Delete</button>
+                 <button class="card-btn movie-card-action">View Details</button>
               </div>
             </div>    
     `
+    const test = Array.from(document.querySelectorAll(movieCard[movie.id]));
+        movieCard.addEventListener('click', () => {
+            //your ajax code here
+            displayBigMovie(movie)
+        });
 
-        // <div class="movie-card-actions-menu">
-    //                             <div class="movie-card-action" data-action="edit">Edit</div>
-    //                             <div class="movie-card-action" data-action="delete">Delete</div>
-    //                         </div>
+
+    // const test = document.getAttribute(movie.id)
+    // test.addEventListener('click', () => {
+    //     displayBigMovie(movie);
+    // });
 
     // grab nodes from the card for event listeners
     const actionsParent = movieCard.querySelector(".movie-card-actions");
@@ -285,22 +295,7 @@ const renderMovie = (movie) => {
     const editBtn = movieCard.querySelector(".movie-card-action[data-action='edit']");
     // const editBtn = movieCard.querySelector(".movie-card-action")
     const deleteBtn = movieCard.querySelector(".movie-card-action[data-action='delete']");
-    // named event handler to close the menu if any click happens outside of it
-    // const handleMenuClose = (e) => {
-    //     // adding optional chaining to the parameter to avoid errors
-    //     if (!actionsParent.contains(e?.target)) {
-    //         actionsParent.classList.remove("active");
-    //         document.removeEventListener("click", handleMenuClose);
-    //     }
-    // };
-    // add event listener to the toggle
-    // actionsToggle.addEventListener("click", () => {
-    //     actionsParent.classList.toggle("active");
-    //     // add event listener to the document to close the menu if any click happens outside of it
-    //     document.addEventListener("click", handleMenuClose);
-    //     console.log("actionToggle");
-    // });
-    // add event listener to the edit btn
+
     editBtn.addEventListener("click", async () => {
         console.log("click")
         // handleMenuClose();
@@ -320,6 +315,21 @@ const renderMovie = (movie) => {
     movieDisplay.appendChild(movieCard);
 };
 
+function displayBigMovie (movie)  {
+    const bigMovieCard = document.createElement("div");
+    const bigMovieDisplay = document.getElementById("big-movie-display");
+// bigMovieCard.classList.add("d-none");
+    bigMovieCard.setAttribute("style", `background-image: url('${movie.Poster}'); background-repeat: no-repeat;`)
+    bigMovieCard.innerHTML = `
+             <p class="d-flex flex-column display-3">${movie.Title}</p>
+        <div class="d-flex gap-4"><p>${movie.Ratings}</p>
+          <p>Year</p>
+          <p>${movie.Genre}</p></div>
+        <div class="my-2 text wrap w-50">${movie.Plot}</div>
+        </div>   
+    `
+    bigMovieDisplay.appendChild(bigMovieCard);
+}
 const deleteMovie = async (movie) => {
     try {
         const url = `http://localhost:3000/movies/${movie.id}`;
