@@ -1,11 +1,14 @@
 import {
-    OMDB_KEY, TMDB_KEY
+    OMDB_KEY
 } from "./keys.js";
 import {strToStandardCase} from "./js-utils.js"
 
 const userTitleInput = document.getElementById("user-title");
 const userRatingInput = document.getElementById("user-rating");
 const addMovieButton = document.getElementById("add-movie-button");
+const loading = document.getElementById("display-movies");
+const loadingS = document.createElement("div")
+loadingS.innerHTML= `<h1>LOADING</h1>`;
 
 
 
@@ -28,7 +31,6 @@ const searchMovie = async () => {
     let newTitle = userTitleInput.value
     let newRating = userRatingInput.value
 
-
     const url = `http://www.omdbapi.com/?apikey=${OMDB_KEY}&t=${strToStandardCase(newTitle)}`;
     const options = {
         "method": "GET",
@@ -38,14 +40,22 @@ const searchMovie = async () => {
 
     const response = await fetch(url, options);
     const movie = await response.json();
-    console.log(movie);;
+    console.log(movie);
+
+   let newMovie = {
+        "Title": `${movie.Title}`,
+        "Ratings": `${newRating}`,
+        "Genre": `${movie.Genre}`,
+        "Plot": `${movie.Plot}`,
+        "Poster": `${movie.Poster}`
+    }
 
     if (movie.Error === "Movie not found!") {
         console.log("Movie not found")
         return;
     } else {
         console.log("match!")
-        postMovie(movie)
+        await postMovie(newMovie)
         }
     }
 
@@ -53,16 +63,23 @@ const searchMovie = async () => {
 
 /////////////////Returns all movies from our local DB, returns the array of movie objects////////////////
 const getLocalMovie = async () => {
+    loading.appendChild(loadingS)
     const url = `http://localhost:3000/movies`;
     const options = {
         "method": "GET",
-        "headers": {
-        }
+        "headers": {}
     }
 
     const response = await fetch(url, options);
     const localMovies = await response.json();
-    return localMovies;
+
+    loading.removeChild(loadingS)
+
+    localMovies.forEach((localMovie) => {
+
+        let test = localMovie.Ratings.split("/")[0]
+        renderMovie(localMovie);
+    })
 }
 
 
@@ -91,17 +108,9 @@ const postMovie = async (movie) => {
         // throw error
         throw new Error("Movie already exists in the database");
     }
-    let rating = movie.Ratings[0].Value;
-    const movieRating = rating.split("/")[0]
-    let newMovie = {
-        "Title": `${movie.Title}`,
-        "Ratings": `${movieRating}`,
-        "Genre": `${movie.Genre}`,
-        "Plot": `${movie.Plot}`,
-        "Poster": `${movie.Poster}`
-    }
+
     const url = `http://localhost:3000/movies`;
-    const body = newMovie;
+    const body = movie;
     const options = {
         method: "POST",
         headers: {
@@ -304,15 +313,38 @@ const renderMovie = (movie) => {
         alert(`${movie.Title} was deleted.`);
         movieCard.remove()
         console.log("deleteButton")
+
+        await deleteMovie(movie);
     });
+
     // THEN append it into the DOM
     movieDisplay.appendChild(movieCard);
 };
 
+const deleteMovie = async (movie) => {
+    try {
+        const url = `http://localhost:3000/movies/${movie.id}`;
+        const body = movie;
+        const options = {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+        };
+        const response = await fetch(url, options);
+        const deletedMovie = await response.json();
+        location.reload();
+        return deletedMovie;
+
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
 
 
-
-export {getMovie, postMovie, getLocalMovie, renderMovie, searchMovie}
+export { getMovie, getLocalMovie, searchMovie }
 
 //TODO: add button that makes the html editable
 //allow user to edit
