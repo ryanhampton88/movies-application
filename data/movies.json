@@ -1,32 +1,8 @@
 {
   "movies": [
     {
-      "Title": "Little Miss Sunshine",
-      "Ratings": "9.8",
-      "Genre": "Comedy, Drama",
-      "Plot": "A family determined to get their young daughter into the finals of a beauty pageant take a cross-country trip in their VW bus.",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BMTgzNTgzODU0NV5BMl5BanBnXkFtZTcwMjEyMjMzMQ@@._V1_SX300.jpg",
-      "id": 2
-    },
-    {
-      "Title": "42",
-      "Ratings": "7.5",
-      "Genre": "Biography, Drama, Sport",
-      "Plot": "In 1947, Jackie Robinson becomes the first African-American to play in Major League Baseball in the modern era when he was signed by the Brooklyn Dodgers and faces considerable racism in the process.",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BMTQwMDU4MDI3MV5BMl5BanBnXkFtZTcwMjU1NDgyOQ@@._V1_SX300.jpg",
-      "id": 3
-    },
-    {
-      "Title": "John Wick",
-      "Ratings": "7.4",
-      "Genre": "Action, Crime, Thriller",
-      "Plot": "An ex-hitman comes out of retirement to track down the gangsters who killed his dog and stole his car.",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BMTU2NjA1ODgzMF5BMl5BanBnXkFtZTgwMTM2MTI4MjE@._V1_SX300.jpg",
-      "id": 4
-    },
-    {
       "Title": "Talladega Nights: The Ballad of Ricky Bobby",
-      "Ratings": "6.6",
+      "Ratings": "9.6",
       "Genre": "Comedy, Sport",
       "Plot": "Number one NASCAR driver Ricky Bobby stays atop the heap thanks to a pact with his best friend and teammate, Cal Naughton, Jr. But when a French Formula One driver, makes his way up the ladder, Ricky Bobby's talent and devotion ar...",
       "Poster": "https://m.media-amazon.com/images/M/MV5BNzAzOTk1OTIyM15BMl5BanBnXkFtZTcwNDIzNTQzMQ@@._V1_SX300.jpg",
