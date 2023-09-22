@@ -1,53 +1,76 @@
 {
   "movies": [
     {
-      "id": 1,
-      "Title": "New MOVIEEE",
-      "Ratings": "2",
-      "Genre": "Work",
-      "Plot": "A weird animal"
+      "Title": "Avatar",
+      "Ratings": "8.9",
+      "Genre": "Action, Adventure, Fantasy",
+      "Plot": "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BZDA0OGQxNTItMDZkMC00N2UyLTg3MzMtYTJmNjg3Nzk5MzRiXkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_SX300.jpg",
+      "id": 1
     },
     {
-      "id": 2,
+      "Title": "Little Miss Sunshine",
+      "Ratings": "9.8",
+      "Genre": "Comedy, Drama",
+      "Plot": "A family determined to get their young daughter into the finals of a beauty pageant take a cross-country trip in their VW bus.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMTgzNTgzODU0NV5BMl5BanBnXkFtZTcwMjEyMjMzMQ@@._V1_SX300.jpg",
+      "id": 2
+    },
+    {
       "Title": "42",
-      "Ratings": 10,
-      "Genre": "Sports",
-      "Plot": "Baseball stuff"
+      "Ratings": "7.5",
+      "Genre": "Biography, Drama, Sport",
+      "Plot": "In 1947, Jackie Robinson becomes the first African-American to play in Major League Baseball in the modern era when he was signed by the Brooklyn Dodgers and faces considerable racism in the process.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMTQwMDU4MDI3MV5BMl5BanBnXkFtZTcwMjU1NDgyOQ@@._V1_SX300.jpg",
+      "id": 3
     },
     {
-      "id": 3,
-      "Title": "Pretty in Pink",
-      "Ratings": 9,
-      "Genre": "whatever",
-      "Plot": "things"
-    },
-    {
-      "Title": "101 Dalmations",
-      "Ratings": "3",
-      "Genre": "",
-      "Plot": "",
+      "Title": "John Wick",
+      "Ratings": "7.4",
+      "Genre": "Action, Crime, Thriller",
+      "Plot": "An ex-hitman comes out of retirement to track down the gangsters who killed his dog and stole his car.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMTU2NjA1ODgzMF5BMl5BanBnXkFtZTgwMTM2MTI4MjE@._V1_SX300.jpg",
       "id": 4
     },
     {
-      "Title": "title",
-      "Ratings": "10",
-      "Genre": "",
-      "Plot": "",
+      "Title": "Talladega Nights: The Ballad of Ricky Bobby",
+      "Ratings": "6.6",
+      "Genre": "Comedy, Sport",
+      "Plot": "Number one NASCAR driver Ricky Bobby stays atop the heap thanks to a pact with his best friend and teammate, Cal Naughton, Jr. But when a French Formula One driver, makes his way up the ladder, Ricky Bobby's talent and devotion ar...",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNzAzOTk1OTIyM15BMl5BanBnXkFtZTcwNDIzNTQzMQ@@._V1_SX300.jpg",
       "id": 5
     },
     {
-      "Title": "title 2",
-      "Ratings": "5",
-      "Genre": "",
-      "Plot": "",
+      "Title": "Moana",
+      "Ratings": "7.6",
+      "Genre": "Animation, Adventure, Comedy",
+      "Plot": "In Ancient Polynesia, when a terrible curse incurred by the Demigod Maui reaches Moana's island, she answers the Ocean's call to seek out the Demigod to set things right.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMjI4MzU5NTExNF5BMl5BanBnXkFtZTgwNzY1MTEwMDI@._V1_SX300.jpg",
       "id": 6
     },
     {
-      "Title": "New Movie",
-      "Ratings": "5",
-      "Genre": "",
-      "Plot": "",
+      "Title": "The Breakfast Club",
+      "Ratings": "7.8",
+      "Genre": "Comedy, Drama",
+      "Plot": "Five high school students meet in Saturday detention and discover how they have a great deal more in common than they thought.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BOTM5N2ZmZTMtNjlmOS00YzlkLTk3YjEtNTU1ZmQ5OTdhODZhXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
       "id": 7
+    },
+    {
+      "Title": "For a Few Dollars More",
+      "Ratings": "8.2",
+      "Genre": "Drama, Western",
+      "Plot": "Two bounty hunters with the same intentions team up to track down an escaped Mexican outlaw.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMzJlZTNkYjQtMTE1OS00YTJlLTgxNjItYzg4NTllODdkMzBiXkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_SX300.jpg",
+      "id": 8
+    },
+    {
+      "Title": "Dirty Harry",
+      "Ratings": "7.7",
+      "Genre": "Action, Crime, Thriller",
+      "Plot": "When a man calling himself \"the Scorpio Killer\" menaces San Francisco, tough-as-nails Police Inspector \"Dirty\" Harry Callahan is assigned to track down the crazed psychopath.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMzdhMTM2YTItOWU2YS00MTM0LTgyNDYtMDM1OWM3NzkzNTM2XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_SX300.jpg",
+      "id": 9
     }
   ]
 }

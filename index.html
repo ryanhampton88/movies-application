@@ -21,24 +21,27 @@
   <section class="container cat-tags">
     <div class="row">
       <div class="column">
-        <ul class="cat-tab-menu">
-          <li class="active">
-            <div>All</div>
-            <span>32</span>
+        <ul class="cat-tab-menu" id="genre-tab-menu">
+          <li class="active genre-tab">
+            <div id="all">All</div>
           </li>
-          <li>
-            <div>Fiction</div>
-            <span>8</span>
+          <li class="genre-tab">
+            <div id="action">Action</div>
           </li>
-          <li>
-            <div>Novels</div>
-            <span>12</span>
+          <li class="genre-tab">
+            <div id="comedy">Comedy</div>
+          </li>
+          <li class="genre-tab">
+            <div id="romance">Romance</div>
+          </li>
+          <li class="genre-tab">
+            <div id="horror">Horror</div>
           </li>
         </ul>
       </div>
       <div class="column flex-shrink justify-content-center">
         <input id="user-title" type="text" placeholder="Enter Title..">
-        <input id="user-rating" type="text" placeholder="Rating..">
+        <input id="user-rating" type="number" min="0" max="10" placeholder="Rating..">
         <button type="submit"></button>
         </form>
         <button class="btn btn-cta" id="add-movie-button">Add Movie</button>
