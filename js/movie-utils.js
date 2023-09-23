@@ -1,16 +1,41 @@
 import {
     OMDB_KEY
 } from "./keys.js";
-import {strToStandardCase} from "./js-utils.js"
+import {strToStandardCase} from "./js-utils.js";
 
+const movieSearchInput = document.getElementById("movie-search");
 const userTitleInput = document.getElementById("user-title");
 const userRatingInput = document.getElementById("user-rating");
+const movieDisplay = document.getElementById("display-movies");
 const loading = document.getElementById("display-movies");
-const loadingS = document.createElement("div");
+const loadingScreen = document.createElement("div");
 const bigMovieCard = document.createElement("div");
 const bigMovieDisplay = document.getElementById("big-movie-display");
-loadingS.innerHTML = `<h1>LOADING</h1>`;
+const displayActionGenre = document.getElementById("display-action");
+const displayAdventureGenre = document.getElementById("display-adventure");
+const displayComedyGenre = document.getElementById("display-comedy");
+const displayHorrorGenre = document.getElementById("display-horror");
+const displayRomanceGenre = document.getElementById("display-romance");
+const displayAllGenres = document.getElementById("display-all");
+const displayDocumentaryGenre = document.getElementById("display-documentary");
 
+loadingScreen.innerHTML =
+    `
+     <div class="d-flex justify-content-center align-items-center w-100 h-100 display-1">LOADING...</div>
+`;
+
+
+const onPageLoad = async () => {
+
+    addEventListener("load", async (e) => {
+        loading.appendChild(loadingScreen);
+        let localMovie = await getlocalMovieDb();
+        loading.removeChild(loadingScreen);
+        localMovie.forEach((movie) => {
+            renderMovie(movie)
+        })
+    });
+}
 
 
 /////////////////Gets a movie from the OMDB API, takes a string as an input, return 1 movie object////////////////
@@ -19,72 +44,90 @@ const getMovie = async (title) => {
     const options = {
         "method": "GET",
         "headers": {}
-    }
+    };
 
     const response = await fetch(url, options);
     const movie = await response.json();
     return movie;
+};
+
+const clearMovieDisplay = () => {
+    movieDisplay.innerHTML = ""
 }
 
 
 /////////takes user input and appends to URL, makes get request, if valid, grabs movie data, and passes it through postMovie /////////
-const searchMovie =  async () => {
+const searchMovie = async () => {
     console.log("did this work");
     let newTitle = userTitleInput.value;
     let newRating = userRatingInput.value;
     console.log(newTitle);
-
+//clears the search input
+    userTitleInput.value = "";
+    userRatingInput.value = "";
     const url = `http://www.omdbapi.com/?apikey=${OMDB_KEY}&t=${strToStandardCase(newTitle)}`;
     const options = {
         "method": "GET",
-        "headers": {
-        }
-    }
+        "headers": {}
+    };
 
     const response = await fetch(url, options);
     const movie = await response.json();
     console.log(movie);
 
-   let newMovie = {
+    let newMovie = {
         "Title": `${movie.Title}`,
         "Ratings": `${newRating}`,
         "Genre": `${movie.Genre}`,
         "Plot": `${movie.Plot}`,
-        "Poster": `${movie.Poster}`
-    }
+        "Poster": `${movie.Poster}`,
+        "Year": `${movie.Year}`,
+        "Director": `${movie.Director}`,
+        "Rated": `${movie.Rated}`,
+        "Actors": `${movie.Actors}`,
+        "Runtime": `${movie.Runtime}`,
+
+    };
 
     if (movie.Error === "Movie not found!") {
-        console.log("Movie not found")
+        console.log("Movie not found");
         return;
     } else {
-        console.log("match!")
-        await postMovie(newMovie)
-        }
+        console.log("match!");
+        await postMovie(newMovie);
     }
 
+};
 
 
-/////////////////Returns all movies from our local DB, returns the array of movie objects////////////////
-const getLocalMovie = async () => {
-    loading.appendChild(loadingS)
+const getlocalMovieDb = async () => {
     const url = `http://localhost:3000/movies`;
     const options = {
         "method": "GET",
         "headers": {}
-    }
+    };
 
     const response = await fetch(url, options);
     const localMovies = await response.json();
-
-    loading.removeChild(loadingS)
-
-    localMovies.forEach((localMovie) => {
-
-        let test = localMovie.Ratings.split("/")[0]
-        renderMovie(localMovie);
-    })
+    return localMovies;
 }
 
+/////////////////Returns all movies from our local DB, returns the array of movie objects////////////////
+const getLocalMovie = async () => {
+    loading.appendChild(loadingScreen);
+    const url = `http://localhost:3000/movies`;
+    const options = {
+        "method": "GET",
+        "headers": {}
+    };
+
+    const response = await fetch(url, options);
+    const localMovies = await response.json();
+    loading.removeChild(loadingScreen);
+    return localMovies;
+
+
+};
 
 
 ///////checks to see if movie already exists in DB before posting it to DB///////////
@@ -104,50 +147,32 @@ const searchMovieByTitle = async (title) => {
 ////////////////takes in a Movie object as an argument, then posts the object to the local DB, then renders in on screen////////////
 const postMovie = async (movie) => {
     try {
-    // //todo: validate movie isn't already in the database
-    const searchResult = await searchMovieByTitle(movie.Title);
-    if (searchResult.length > 0) {
-        //movie already exists
-        // throw error
-        throw new Error("Movie already exists in the database");
-    }
+        // //todo: validate movie isn't already in the database
+        const searchResult = await searchMovieByTitle(movie.Title);
+        if (searchResult.length > 0) {
+            //movie already exists
+            // throw error
+            throw new Error("Movie already exists in the database");
+        }
 
-    const url = `http://localhost:3000/movies`;
-    const body = movie;
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-    };
-    const response = await fetch(url, options);
-    const newId = await response.json();
-    renderMovie(newId)
-    return newId;
+        const url = `http://localhost:3000/movies`;
+        const body = movie;
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+        };
+        const response = await fetch(url, options);
+        const newId = await response.json();
+        renderMovie(newId);
+        return newId;
     } catch (error) {
         console.log(error);
         return null;
     }
-}
-
-
-//TODO: no longer necessary, pulling movie info from API now
-//////////takes user input and converts it into an object, then passes it to postMovie function to add it to the DB////////////
-function addMovie() {
-    addMovieButton.addEventListener("click", function() {
-
-        let newTitle = userTitleInput.value
-        let newRating = userRatingInput.value
-        let newMovieObj = {
-            "Title": `${strToStandardCase(newTitle)}`,
-            "Ratings": `${newRating}`,
-            "Genre": "",
-            "Plot": ""
-        }
-        postMovie(newMovieObj)
-    })
-}
+};
 
 const patchMovie = async (movie) => {
     try {
@@ -204,59 +229,57 @@ const renderModal = (movie, action) => {
             </div>
         </div>
     `;
-    // grab nodes from the modal for event listeners
+
+    //nodes from the modal for event listeners
     const modalClose = modal.querySelector(".modal-close");
     const modalBg = modal.querySelector(".modal-bg");
     const modalForm = modal.querySelector("#movie-form");
     const modalFormCancel = modal.querySelector("[data-action='cancel']");
     const modalFormSave = modal.querySelector("[data-action='save']");
-    const modalFormCreate = modal.querySelector("[data-action='create']");
-    console.log("got here")
 
-    // add event listener to the close btn
+    console.log("got here");
+
+    // event listener for close button
     modalClose?.addEventListener("click", () => {
         modal.remove();
     });
     modalBg?.addEventListener("click", () => {
         modal.remove();
     });
-    // add event listener to the cancel btn
+    // event listener for cancel button
     modalFormCancel?.addEventListener("click", (e) => {
         e.preventDefault();
         modal.remove();
     });
-    // add event listener to the save btn
+    // event listener for save button
     modalForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
         let updatedMovieData = new FormData(modalForm, modalFormSave);
         let updatedMovieObj = Object.fromEntries(updatedMovieData);
         console.log(updatedMovieObj);
 
-        // TODO: if the form is valid, grab the form data and create a new movie object
-        // REMEMBER, you still have access to the movie object here because it was passed as a parameter
-
-       let updatedMovie = await patchMovie(updatedMovieObj)
-       console.log(updatedMovie);
-       let refreshedMovies = await getLocalMovie();
-       refreshedMovies.forEach((movie) => {
-           renderMovie(movie);
-       })
+        let updatedMovie = await patchMovie(updatedMovieObj);
+        console.log(updatedMovie);
+        let refreshedMovies = await getLocalMovie();
+        refreshedMovies.forEach((movie) => {
+            renderMovie(movie);
+        });
         alert(`Save button clicked for ${movie.Title}`);
         modal.remove();
     });
 
-    // THEN append it into the DOM
+    // appends dynamically created HTML to the DOM
     document.body.appendChild(modal);
 };
 
 const renderMovie = (movie) => {
-    // localMovie.Ratings.split("/")[0]
-    // const movieRatings = catchRating.split("/")
+    console.log("rendering movie");
     const movieCard = document.createElement("div");
     const movieDisplay = document.getElementById("display-movies");
+
     movieCard.classList.add("carousel-card");
-    movieCard.setAttribute("style", `background-image: url('${movie.Poster}')` )
-    movieCard.setAttribute("data-id", movie.id)
+    movieCard.setAttribute("style", `background-image: url('${movie.Poster}')`);
+    movieCard.setAttribute("data-id", movie.id);
     movieCard.innerHTML = `
             <div class="card-details">
               <div class="card-header">
@@ -264,72 +287,60 @@ const renderMovie = (movie) => {
                 <p class="card-description">${movie.Plot}</p>
               </div>
               <div class="card-rating">
-                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
-                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
-                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
-                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
-                <ion-icon name="heart-outline" class='heart-icon'></ion-icon>
+                <ion-icon name="heart-outline" class="heart-icon"></ion-icon>
+                <ion-icon name="heart-outline" class="heart-icon"></ion-icon>
+                <ion-icon name="heart-outline" class="heart-icon"></ion-icon>
+                <ion-icon name="heart-outline" class="heart-icon"></ion-icon>
+                <ion-icon name="heart-outline" class="heart-icon"></ion-icon>
               </div>
               <div class="card-call-to-action movie-card-actions-menu">
                 <button class="card-btn primary movie-card-action" data-action="edit" id="edit-button">Edit</button>
                 <button class="card-btn movie-card-action" data-action="delete" id="delete-button">Delete</button>
-                 <button class="card-btn movie-card-action">View Details</button>
               </div>
             </div>    
-    `
+    `;
     const test = Array.from(document.querySelectorAll(movieCard[movie.id]));
-        movieCard.addEventListener('click', () => {
-            //your ajax code here
-            displayBigMovie(movie)
-        });
-
-
-    // const test = document.getAttribute(movie.id)
-    // test.addEventListener('click', () => {
-    //     displayBigMovie(movie);
-    // });
+    movieCard.addEventListener("click", () => {
+        displayBigMovie(movie);
+    });
 
     // grab nodes from the card for event listeners
-    const actionsParent = movieCard.querySelector(".movie-card-actions");
-    const actionsToggle = movieCard.querySelector(".movie-card-actions-toggle");
     const editBtn = movieCard.querySelector(".movie-card-action[data-action='edit']");
-    // const editBtn = movieCard.querySelector(".movie-card-action")
     const deleteBtn = movieCard.querySelector(".movie-card-action[data-action='delete']");
 
-    editBtn.addEventListener("click", async () => {
-        console.log("click")
-        // handleMenuClose();
+    // event listener for edit movie button
+    editBtn.addEventListener("click", async (e) => {
+        e.preventDefault()
+        console.log("click");
         renderModal(movie, "save");
 
     });
-    // add event listener to the delete btn
-    deleteBtn.addEventListener("click", async () => {
+    // event listener for delete movie button
+    deleteBtn.addEventListener("click", async (e) => {
+        e.preventDefault()
         alert(`${movie.Title} was deleted.`);
-        movieCard.remove()
-        console.log("deleteButton")
-
+        movieCard.remove();
         await deleteMovie(movie);
     });
 
     // THEN append it into the DOM
-    movieDisplay.appendChild(movieCard);
+    movieDisplay.prepend(movieCard);
 };
 
-function displayBigMovie (movie)  {
-    const bigMovieCard = document.createElement("div");
+function displayBigMovie(movie) {
     const bigMovieDisplay = document.getElementById("big-movie-display");
-// bigMovieCard.classList.add("d-none");
-    bigMovieCard.setAttribute("style", `background-image: url('${movie.Poster}'); background-repeat: no-repeat;`)
-    bigMovieCard.innerHTML = `
-             <p class="d-flex flex-column display-3">${movie.Title}</p>
-        <div class="d-flex gap-4"><p>${movie.Ratings}</p>
-          <p>Year</p>
-          <p>${movie.Genre}</p></div>
+    // bigMovieDisplay.setAttribute("style", `background-image: url('${movie.Poster}'); background-repeat: no-repeat;`)
+    bigMovieDisplay.innerHTML = `
+             <p class="d-flex flex-column display-3 fw-bolder">${movie.Title}</p>
+        <div class="d-flex gap-4"><p><span class="fw-bold">Rating:</span> ${movie.Ratings}</p>
+          <p><span class="fw-bold">Released:</span> ${movie.Year}</p>
+          <p><span class="fw-bold">Genre:</span> ${movie.Genre}</p></div>
+          <div class="my-2 text wrap w-50"><span class="fw-bold">Actors:</span> ${movie.Actors}</div>
         <div class="my-2 text wrap w-50">${movie.Plot}</div>
         </div>   
-    `
-    bigMovieDisplay.appendChild(bigMovieCard);
+    `;
 }
+
 const deleteMovie = async (movie) => {
     try {
         const url = `http://localhost:3000/movies/${movie.id}`;
@@ -353,10 +364,203 @@ const deleteMovie = async (movie) => {
 };
 
 
-export { getMovie, getLocalMovie, searchMovie }
+//TODO: this does not work as intended, come back to this.....
+const movieSeachByInputMatch = () => {
+    movieSearchInput.addEventListener("input", async (e) => {
+        e.preventDefault();
+        console.log(e.target.value);
+        const url = `http://localhost:3000/movies`;
+        const options = {
+            "method": "GET",
+        };
 
-//TODO: add button that makes the html editable
-//allow user to edit
-//allow user to submit edits
-//when submit clicked, changes get made to SAME object in local JSON DB
-//then updated object gets rendered on screen
+        const response = await fetch(url, options);
+        const localMovies = await response.json();
+
+        let movieSearchMatch = [];
+
+        for (let i = 0; i < localMovies.length; i++) {
+            if (
+                localMovies[i].Title
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase())
+            ) {
+                movieSearchMatch.push(localMovies[i]);
+            }
+        }
+
+        clearMovieDisplay();
+
+        movieSearchMatch.forEach((movie) => {
+            renderMovie(movie);
+        });
+    });
+};
+
+const displayActionMovies = () => {
+    displayActionGenre.addEventListener(`click`, async (e) => {
+        e.preventDefault()
+        let localMovies = await getlocalMovieDb();
+        let actionMovies = [];
+
+        localMovies.forEach((localMovie) => {
+            if(localMovie.Genre.includes("Action")) {
+                actionMovies.push(localMovie)
+            }
+        });
+        if (actionMovies.length === 0) {
+            clearMovieDisplay();
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
+            console.log("no matches")
+        } else {
+            clearMovieDisplay();
+            actionMovies.forEach((movie) => {
+                renderMovie(movie)
+            })
+
+        }
+    })
+
+}
+
+const displayAdventureMovies = () => {
+    displayAdventureGenre.addEventListener(`click`, async (e) => {
+        e.preventDefault()
+        let localMovies = await getlocalMovieDb();
+        let adventureMovies = [];
+
+        localMovies.forEach((localMovie) => {
+            if(localMovie.Genre.includes("Adventure")) {
+                adventureMovies.push(localMovie)
+            }
+        });
+        if (adventureMovies.length === 0) {
+            clearMovieDisplay();
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
+            console.log("no matches")
+        } else {
+            clearMovieDisplay();
+            adventureMovies.forEach((movie) => {
+                renderMovie(movie)
+            })
+
+        }
+    })
+
+}
+
+const displayComedyMovies = () => {
+    displayComedyGenre.addEventListener(`click`, async (e) => {
+        e.preventDefault()
+        let localMovies = await getlocalMovieDb();
+        let comedyMovies = [];
+
+        localMovies.forEach((localMovie) => {
+            if(localMovie.Genre.includes("Comedy")) {
+                comedyMovies.push(localMovie)
+            }
+        });
+        if (comedyMovies.length === 0) {
+            clearMovieDisplay();
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
+            console.log("no matches")
+        } else {
+            clearMovieDisplay();
+            comedyMovies.forEach((movie) => {
+                renderMovie(movie)
+            })
+
+        }
+    })
+}
+
+const displayHorrorMovies = () => {
+    displayHorrorGenre.addEventListener(`click`, async (e) => {
+        e.preventDefault()
+        let localMovies = await getlocalMovieDb();
+        let horrorMovies = [];
+
+        localMovies.forEach((localMovie) => {
+            if(localMovie.Genre.includes("Horror")) {
+                horrorMovies.push(localMovie)
+            }
+        });
+        if (horrorMovies.length === 0) {
+            clearMovieDisplay();
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
+            console.log("no matches")
+        } else {
+            clearMovieDisplay();
+            horrorMovies.forEach((movie) => {
+                renderMovie(movie)
+            })
+
+        }
+    })
+}
+
+const displayRomanceMovies = () => {
+    displayRomanceGenre.addEventListener(`click`, async (e) => {
+        e.preventDefault()
+        let localMovies = await getlocalMovieDb();
+        let romanceMovies = [];
+
+        localMovies.forEach((localMovie) => {
+            if(localMovie.Genre.includes("Romance")) {
+                romanceMovies.push(localMovie)
+            }
+        });
+        if (romanceMovies.length === 0) {
+            clearMovieDisplay();
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
+            console.log("no matches")
+        } else {
+            clearMovieDisplay();
+            romanceMovies.forEach((movie) => {
+                renderMovie(movie)
+            })
+
+        }
+    })
+}
+
+const displayDocumentaryMovies = () => {
+    displayDocumentaryGenre.addEventListener(`click`, async (e) => {
+        e.preventDefault()
+        let localMovies = await getlocalMovieDb();
+        let documentaryMovies = [];
+
+        localMovies.forEach((localMovie) => {
+            if(localMovie.Genre.includes("Documentary")) {
+                documentaryMovies.push(localMovie)
+            }
+        });
+        console.log(documentaryMovies);
+        if (documentaryMovies.length === 0) {
+            clearMovieDisplay();
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
+            console.log("no matches")
+        } else {
+            clearMovieDisplay();
+            documentaryMovies.forEach((movie) => {
+                renderMovie(movie)
+            })
+
+        }
+
+    })
+}
+const displayAllMovies = () => {
+    displayAllGenres.addEventListener(`click`, async (e) => {
+        e.preventDefault()
+        let localMovies = await getlocalMovieDb();
+        clearMovieDisplay();
+        localMovies.forEach((movie) => {
+            renderMovie(movie)
+        })
+    });
+}
+
+
+export {onPageLoad, getMovie, getlocalMovieDb, getLocalMovie, searchMovie, renderMovie, movieSeachByInputMatch, displayAdventureMovies, displayActionMovies, displayComedyMovies, displayHorrorMovies, displayRomanceMovies, displayDocumentaryMovies, displayAllMovies, clearMovieDisplay};
+
