@@ -32,10 +32,10 @@ const onPageLoad = async () => {
         let localMovie = await getlocalMovieDb();
         loading.removeChild(loadingScreen);
         localMovie.forEach((movie) => {
-            renderMovie(movie)
-        })
+            renderMovie(movie);
+        });
     });
-}
+};
 
 
 /////////////////Gets a movie from the OMDB API, takes a string as an input, return 1 movie object////////////////
@@ -52,8 +52,8 @@ const getMovie = async (title) => {
 };
 
 const clearMovieDisplay = () => {
-    movieDisplay.innerHTML = ""
-}
+    movieDisplay.innerHTML = "";
+};
 
 
 /////////takes user input and appends to URL, makes get request, if valid, grabs movie data, and passes it through postMovie /////////
@@ -110,7 +110,7 @@ const getlocalMovieDb = async () => {
     const response = await fetch(url, options);
     const localMovies = await response.json();
     return localMovies;
-}
+};
 
 /////////////////Returns all movies from our local DB, returns the array of movie objects////////////////
 const getLocalMovie = async () => {
@@ -125,7 +125,6 @@ const getLocalMovie = async () => {
     const localMovies = await response.json();
     loading.removeChild(loadingScreen);
     return localMovies;
-
 
 };
 
@@ -167,6 +166,7 @@ const postMovie = async (movie) => {
         const response = await fetch(url, options);
         const newId = await response.json();
         renderMovie(newId);
+        displayBigMovie(newId)
         return newId;
     } catch (error) {
         console.log(error);
@@ -294,12 +294,14 @@ const renderMovie = (movie) => {
                 <ion-icon name="heart-outline" class="heart-icon"></ion-icon>
               </div>
               <div class="card-call-to-action movie-card-actions-menu">
-                <button class="card-btn primary movie-card-action" data-action="edit" id="edit-button">Edit</button>
-                <button class="card-btn movie-card-action" data-action="delete" id="delete-button">Delete</button>
+                <button class="card-btn primary movie-card-action" data-action="edit">Edit</button>
+                <button class="card-btn movie-card-action" data-action="delete">Delete</button>
               </div>
             </div>    
     `;
-    const test = Array.from(document.querySelectorAll(movieCard[movie.id]));
+
+
+    // const test = Array.from(document.querySelectorAll(movieCard[movie.id]));
     movieCard.addEventListener("click", () => {
         displayBigMovie(movie);
     });
@@ -310,21 +312,28 @@ const renderMovie = (movie) => {
 
     // event listener for edit movie button
     editBtn.addEventListener("click", async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         console.log("click");
         renderModal(movie, "save");
 
     });
     // event listener for delete movie button
     deleteBtn.addEventListener("click", async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         alert(`${movie.Title} was deleted.`);
         movieCard.remove();
         await deleteMovie(movie);
     });
 
-    // THEN append it into the DOM
+    // prepends to targeted DOM element
     movieDisplay.prepend(movieCard);
+};
+
+
+//displays big movie details for first movie in list
+let defaultBigMovie = async () => {
+    let movies = await getlocalMovieDb();
+    displayBigMovie(movies[movies.length - 1]);
 };
 
 function displayBigMovie(movie) {
@@ -364,7 +373,6 @@ const deleteMovie = async (movie) => {
 };
 
 
-//TODO: this does not work as intended, come back to this.....
 const movieSeachByInputMatch = () => {
     movieSearchInput.addEventListener("input", async (e) => {
         e.preventDefault();
@@ -394,173 +402,194 @@ const movieSeachByInputMatch = () => {
         movieSearchMatch.forEach((movie) => {
             renderMovie(movie);
         });
+        displayBigMovie(movieSearchMatch[movieSearchMatch.length-1])
     });
 };
 
 const displayActionMovies = () => {
     displayActionGenre.addEventListener(`click`, async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         let localMovies = await getlocalMovieDb();
         let actionMovies = [];
 
         localMovies.forEach((localMovie) => {
-            if(localMovie.Genre.includes("Action")) {
-                actionMovies.push(localMovie)
+            if (localMovie.Genre.includes("Action")) {
+                actionMovies.push(localMovie);
             }
         });
         if (actionMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
-            console.log("no matches")
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            console.log("no matches");
         } else {
             clearMovieDisplay();
             actionMovies.forEach((movie) => {
-                renderMovie(movie)
-            })
-
+                renderMovie(movie);
+            });
+            displayBigMovie(actionMovies[actionMovies.length-1])
         }
-    })
+    });
 
-}
+};
 
 const displayAdventureMovies = () => {
     displayAdventureGenre.addEventListener(`click`, async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         let localMovies = await getlocalMovieDb();
         let adventureMovies = [];
 
         localMovies.forEach((localMovie) => {
-            if(localMovie.Genre.includes("Adventure")) {
-                adventureMovies.push(localMovie)
+            if (localMovie.Genre.includes("Adventure")) {
+                adventureMovies.push(localMovie);
             }
         });
         if (adventureMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
-            console.log("no matches")
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            console.log("no matches");
         } else {
             clearMovieDisplay();
             adventureMovies.forEach((movie) => {
-                renderMovie(movie)
-            })
-
+                renderMovie(movie);
+            });
+            displayBigMovie(adventureMovies[adventureMovies.length-1])
         }
-    })
+    });
 
-}
+};
 
 const displayComedyMovies = () => {
     displayComedyGenre.addEventListener(`click`, async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         let localMovies = await getlocalMovieDb();
         let comedyMovies = [];
 
         localMovies.forEach((localMovie) => {
-            if(localMovie.Genre.includes("Comedy")) {
-                comedyMovies.push(localMovie)
+            if (localMovie.Genre.includes("Comedy")) {
+                comedyMovies.push(localMovie);
             }
         });
         if (comedyMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
-            console.log("no matches")
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            console.log("no matches");
         } else {
             clearMovieDisplay();
             comedyMovies.forEach((movie) => {
-                renderMovie(movie)
-            })
-
+                renderMovie(movie);
+            });
+            displayBigMovie(comedyMovies[comedyMovies.length-1])
         }
-    })
-}
+    });
+};
 
 const displayHorrorMovies = () => {
     displayHorrorGenre.addEventListener(`click`, async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         let localMovies = await getlocalMovieDb();
         let horrorMovies = [];
 
         localMovies.forEach((localMovie) => {
-            if(localMovie.Genre.includes("Horror")) {
-                horrorMovies.push(localMovie)
+            if (localMovie.Genre.includes("Horror")) {
+                horrorMovies.push(localMovie);
             }
         });
         if (horrorMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
-            console.log("no matches")
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            console.log("no matches");
         } else {
             clearMovieDisplay();
             horrorMovies.forEach((movie) => {
-                renderMovie(movie)
-            })
-
+                renderMovie(movie);
+            });
+            displayBigMovie(horrorMovies[horrorMovies.length-1])
         }
-    })
-}
+    });
+};
 
 const displayRomanceMovies = () => {
     displayRomanceGenre.addEventListener(`click`, async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         let localMovies = await getlocalMovieDb();
         let romanceMovies = [];
 
         localMovies.forEach((localMovie) => {
-            if(localMovie.Genre.includes("Romance")) {
-                romanceMovies.push(localMovie)
+            if (localMovie.Genre.includes("Romance")) {
+                romanceMovies.push(localMovie);
             }
         });
         if (romanceMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
-            console.log("no matches")
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            console.log("no matches");
         } else {
             clearMovieDisplay();
             romanceMovies.forEach((movie) => {
-                renderMovie(movie)
-            })
-
+                renderMovie(movie);
+            });
+            displayBigMovie(romanceMovies[romanceMovies.length-1])
         }
-    })
-}
+    });
+};
 
 const displayDocumentaryMovies = () => {
     displayDocumentaryGenre.addEventListener(`click`, async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         let localMovies = await getlocalMovieDb();
         let documentaryMovies = [];
 
         localMovies.forEach((localMovie) => {
-            if(localMovie.Genre.includes("Documentary")) {
-                documentaryMovies.push(localMovie)
+            if (localMovie.Genre.includes("Documentary")) {
+                documentaryMovies.push(localMovie);
             }
         });
         console.log(documentaryMovies);
         if (documentaryMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`
-            console.log("no matches")
+            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            console.log("no matches");
         } else {
             clearMovieDisplay();
             documentaryMovies.forEach((movie) => {
-                renderMovie(movie)
-            })
-
+                renderMovie(movie);
+            });
+            displayBigMovie(documentaryMovies[documentaryMovies.length-1])
         }
 
-    })
-}
+    });
+};
 const displayAllMovies = () => {
     displayAllGenres.addEventListener(`click`, async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         let localMovies = await getlocalMovieDb();
         clearMovieDisplay();
         localMovies.forEach((movie) => {
-            renderMovie(movie)
-        })
+            renderMovie(movie);
+        });
+        displayBigMovie(localMovies[localMovies.length-1])
+
     });
-}
+
+};
 
 
-export {onPageLoad, getMovie, getlocalMovieDb, getLocalMovie, searchMovie, renderMovie, movieSeachByInputMatch, displayAdventureMovies, displayActionMovies, displayComedyMovies, displayHorrorMovies, displayRomanceMovies, displayDocumentaryMovies, displayAllMovies, clearMovieDisplay};
+export {
+    onPageLoad,
+    getMovie,
+    getlocalMovieDb,
+    getLocalMovie,
+    searchMovie,
+    renderMovie,
+    movieSeachByInputMatch,
+    displayAdventureMovies,
+    displayActionMovies,
+    displayComedyMovies,
+    displayHorrorMovies,
+    displayRomanceMovies,
+    displayDocumentaryMovies,
+    displayAllMovies,
+    clearMovieDisplay,
+    defaultBigMovie
+};
 
