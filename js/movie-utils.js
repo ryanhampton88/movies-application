@@ -19,7 +19,7 @@ const displayAllGenres = document.getElementById("display-all");
 const displayDocumentaryGenre = document.getElementById("display-documentary");
 loadingScreen.innerHTML =
     `
-     <div class="d-flex justify-content-center align-items-center w-100 h-100 display-1">LOADING...</div>
+     <div class="d-flex justify-content-center align-items-center vw-100 h-100 display-1 loading">LOADING...</div>
 `;
 
 
@@ -394,10 +394,11 @@ function displayBigMovie(movie) {
     const bigMovieDisplay = document.getElementById("big-movie-display");
     // bigMovieDisplay.setAttribute("style", `background-image: url('${movie.Poster}'); background-repeat: no-repeat;`)
     bigMovieDisplay.innerHTML = `
-             <p class="d-flex flex-column display-3 fw-bolder">${movie.Title}</p>
-        <div class="d-flex gap-4"><p><span class="fw-bold">Rating:</span> ${movie.Ratings} / 5</p>
+             <p class="d-flex flex-column display-3 fw-bolder movie-title">${movie.Title}</p>
+        <div class="d-flex gap-4"><p><span class="fw-bold">Rating:</span> &#9733; ${movie.Ratings} / 5</p>
           <p><span class="fw-bold">Released:</span> ${movie.Year}</p>
-          <p><span class="fw-bold">Genre:</span> ${movie.Genre}</p></div>
+          <p><span class="fw-bold">Genre:</span> ${movie.Genre}</p>
+          <p><span class="fw-bold">Runtime:</span> ${movie.Runtime}</p></div>
           <div class="my-2 text wrap w-50"><span class="fw-bold">Actors:</span> ${movie.Actors}</div>
         <div class="my-2 text wrap w-50">${movie.Plot}</div>
         </div>   
