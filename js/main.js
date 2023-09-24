@@ -1,17 +1,16 @@
 import {
-    onPageLoad,getLocalMovie,getlocalMovieDb, searchMovie, renderMovie, movieSeachByInputMatch, displayActionMovies, displayAdventureMovies, displayComedyMovies, displayHorrorMovies, displayRomanceMovies, displayDocumentaryMovies, displayAllMovies
+    onPageLoad,
+    movieSeachByInputMatch,
+    displayActionMovies,
+    displayAdventureMovies,
+    displayComedyMovies,
+    displayHorrorMovies,
+    displayRomanceMovies,
+    displayDocumentaryMovies,
+    displayAllMovies,
+    inputValidation
 } from "./movie-utils.js";
 
-
-
-const movieSearchInput = document.getElementById("movie-search");
-const addMovieButton = document.getElementById("add-movie-button");
-const loadingScreen = document.createElement("div");
-loadingScreen.innerHTML =
-    `
-     <div class="d-flex justify-content-center align-items-center w-100 h-100 display-1">LOADING...</div>
-`;
-const loading = document.getElementById("display-movies");
 
 //////// MAIN METHOD/////////
 (async () => {
@@ -19,28 +18,22 @@ const loading = document.getElementById("display-movies");
     //makes API call to retrieve all movies from local DB and render them on screen
     onPageLoad();
 
+    // validates the add movie from input BEFORE running the function that tries to add the movie to the DB
+    inputValidation();
 
+    //event listener for search input
+    movieSeachByInputMatch();
 
-    addMovieButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        searchMovie();
-    });
-
-movieSeachByInputMatch()
-
-
-    displayActionMovies()
-    displayAdventureMovies()
-    displayComedyMovies()
-    displayHorrorMovies()
-    displayRomanceMovies()
-    displayDocumentaryMovies()
-    displayAllMovies()
-
+    //event listeners for genre nav links
+    displayActionMovies();
+    displayAdventureMovies();
+    displayComedyMovies();
+    displayHorrorMovies();
+    displayRomanceMovies();
+    displayDocumentaryMovies();
+    displayAllMovies();
 
 
 })();
-//TODO: fix add movie form, directions require ability for user to enter movie title AND rating
-//TODO: fix edit button functionality, use star rating system???
-//TODO: make filter by gene tabs functional
+
 
