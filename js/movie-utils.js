@@ -20,6 +20,7 @@ const loadingScreen = document.createElement("div");
 const loadingHtml = `<div class="d-flex justify-content-center align-items-center vw-100 h-100 display-1 loading">LOADING...</div>`
 const noMatchesFoundHtml =  `<div class="d-flex justify-content-center align-items-center vw-100 h-50 display-1 loading">No Matches Found...</div>`;
 loadingScreen.innerHTML = loadingHtml;
+const bigMovieDisplay = document.getElementById("big-movie-display");
 
 
 //runs on initial page load to render all movies that exist in the local DB
@@ -55,6 +56,10 @@ const getMovie = async (title) => {
 //runs before prepending/displaying any new data to movie-display div
 const clearMovieDisplay = () => {
     movieDisplay.innerHTML = "";
+};
+
+const clearBigMovieDisplay = () => {
+    bigMovieDisplay.innerHTML = "";
 };
 
 
@@ -227,14 +232,14 @@ const renderModal = (movie, action) => {
     modal.classList.add("modal");
     modal.innerHTML = `
         <div class="modal-bg"></div>
-        <div class="modal-content">
+        <div class="modal-content" style="background-color: white;">
             <div class="modal-header">
-                <h2 class="modal-title">${movie?.Title ? movie.Title : ""}</h2>
+                <h2 class="modal-title" style="color: red; font-family: Bebas Neue;">${movie?.Title ? movie.Title : ""}</h2>
                 <span class="modal-close">&times;</span>
             </div>
             <div class="modal-body">
                 <form class="modal-form d-flex flex-column align-items-center" id="movie-form">
-                <div class="d-flex flex-column gap-2 mb-2">
+                <div class="d-flex flex-column gap-2 mb-2" style="color: black;">
                     <label for="Ratings">
                         Rating
                         <input required type="number" name="Ratings" id="Rating" min="0" max="10" value="${movie?.Ratings ? movie.Ratings : ""}" />
@@ -330,6 +335,7 @@ const renderMovie = (movie) => {
     }
 
     movieCard.classList.add("carousel-card");
+    movieCard.classList.add("card-animation");
     movieCard.setAttribute("style", `background-image: url('${movie.Poster}')`);
     movieCard.setAttribute("data-id", movie.id);
     movieCard.innerHTML = `
@@ -390,16 +396,15 @@ let defaultBigMovie = async () => {
 // take a movie object as an argument, then displays that movie objects details in the big-movie display div
 // called in displayActionMovies, displayAdventureMovies ect.....
 function displayBigMovie(movie) {
-    const bigMovieDisplay = document.getElementById("big-movie-display");
     // bigMovieDisplay.setAttribute("style", `background-image: url('${movie.Poster}'); background-repeat: no-repeat;`)
     bigMovieDisplay.innerHTML = `
-             <p class="d-flex flex-column display-3 fw-bolder movie-title">${movie.Title}</p>
-        <div class="d-flex gap-4"><p><span class="fw-bold">Rating:</span> &#9733; ${movie.Ratings} / 5</p>
-          <p><span class="fw-bold">Released:</span> ${movie.Year}</p>
-          <p><span class="fw-bold">Genre:</span> ${movie.Genre}</p>
-          <p><span class="fw-bold">Runtime:</span> ${movie.Runtime}</p></div>
-          <div class="my-2 text wrap w-50"><span class="fw-bold">Actors:</span> ${movie.Actors}</div>
-        <div class="my-2 text wrap w-50">${movie.Plot}</div>
+             <p class="d-flex flex-column display-3 fw-bolder movie-title" style="color: white;">${movie.Title}</p>
+        <div class="d-flex gap-4" style="color: white;"><p><span class="fw-bold" style="color: white;">Rating:</span> &#9733; ${movie.Ratings} / 5</p>
+          <p><span class="fw-bold" style="color: white;">Released:</span> ${movie.Year}</p>
+          <p><span class="fw-bold" style="color: white;">Genre:</span> ${movie.Genre}</p>
+          <p><span class="fw-bold" style="color: white;">Runtime:</span> ${movie.Runtime}</p></div>
+          <div class="my-2 text wrap w-50" style="color: white;"><span class="fw-bold">Actors:</span> ${movie.Actors}</div>
+        <div class="my-2 text wrap w-50" style="color: white;">${movie.Plot}</div>
         </div>   
     `;
 }
@@ -478,6 +483,7 @@ const displayActionMovies = () => {
         });
         if (actionMovies.length === 0) {
             clearMovieDisplay();
+            clearBigMovieDisplay();
             movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
@@ -504,6 +510,7 @@ const displayAdventureMovies = () => {
         });
         if (adventureMovies.length === 0) {
             clearMovieDisplay();
+            clearBigMovieDisplay();
             movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
@@ -530,6 +537,7 @@ const displayComedyMovies = () => {
         });
         if (comedyMovies.length === 0) {
             clearMovieDisplay();
+            clearBigMovieDisplay();
             movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
@@ -555,6 +563,7 @@ const displayHorrorMovies = () => {
         });
         if (horrorMovies.length === 0) {
             clearMovieDisplay();
+            clearBigMovieDisplay();
             movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
@@ -580,6 +589,7 @@ const displayRomanceMovies = () => {
         });
         if (romanceMovies.length === 0) {
             clearMovieDisplay();
+            clearBigMovieDisplay();
             movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
@@ -606,6 +616,7 @@ const displayDocumentaryMovies = () => {
         console.log(documentaryMovies);
         if (documentaryMovies.length === 0) {
             clearMovieDisplay();
+            clearBigMovieDisplay();
             movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
@@ -613,7 +624,7 @@ const displayDocumentaryMovies = () => {
             documentaryMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(documentaryMovies[documentaryMovies.length-1])
+                displayBigMovie(documentaryMovies[documentaryMovies.length-1])
         }
 
     });
