@@ -241,17 +241,24 @@ const renderModal = (movie, action) => {
                 <form class="modal-form d-flex flex-column align-items-center" id="movie-form">
                 <div class="d-flex flex-column gap-2 mb-2" style="color: black;">
                     <label for="Ratings">
-                        Rating
-                        <input required type="number" name="Ratings" id="Rating" min="0" max="10" value="${movie?.Ratings ? movie.Ratings : ""}" />
+                        Ratings
+                        <input required type="number" name="Ratings" id="Ratings" min="0" max="10" value="${movie?.Ratings ? movie.Ratings : ""}" />
                     </label>
                     <label for="id">
-                        <input hidden required type="number" name="id" id="year" value="${movie?.id ? movie.id : ""}" />
+                        <input hidden required type="number" name="id" id="id" value="${movie?.id ? movie.id : ""}" />
                     </label>
-                    <label for="Genre" class="d-flex align-items-center gap-1">
-                        Genre
-                        <textarea name="Genre" id="description">${movie?.Genre ? movie.Genre : ""}</textarea>
-                    </label>
+
+               <select multiple class="form-select" aria-label="Multiple select example" name="Genre" id="Genre">
+                <option id ="Action" value="Action">Action</option>
+                <option id ="Adventure" value="Adventure">Adventure</option>
+                 <option id="Comedy" value="Comedy">Comedy</option>
+                <option id ="Horror" value="Horror">Horror</option>
+                <option id="Romance" value="Romance">Romance</option>
+                <option id ="Documentary" value="Documentary">Documentary</option>
+                </select>
                     </div>
+                    
+         
                     <div class="modal-form-actions">
                         <button type="submit" class="btn btn-cta btn-secondary" data-action="${action}">${action}</button>
                         <button type="button" class="btn btn-secondary" data-action="cancel">Cancel</button>
@@ -286,11 +293,28 @@ const renderModal = (movie, action) => {
         modal.remove();
     });
     // event listener for save button, captures the submitted form data to patch updates to the changed movie properties
-    modalForm.addEventListener("submit", async (e) => {
+    modalFormSave.addEventListener("click", async (e) => {
         e.preventDefault();
-        let updatedMovieData = new FormData(modalForm, modalFormSave);
-        let updatedMovieObj = Object.fromEntries(updatedMovieData);
-        console.log(updatedMovieObj);
+        let movieId = document.getElementById("id").value;
+        let newRating = document.getElementById("Ratings").value;
+        console.log(typeof newRating)
+        let genreList = document.getElementById("Genre");
+        console.log(movieId);
+        let genreArr = [];
+
+        for (let i = 0; i < genreList.options.length; i+=1) {
+            if (genreList.options[i].selected) {
+                genreArr.push(genreList.options[i].text)
+            }
+
+        }
+        let newGenres= (genreArr.join(","));
+
+       let updatedMovieObj = {
+            id: `${movieId}`,
+           Ratings: `${newRating}`,
+           Genre: `${newGenres}`
+       }
 
         let updatedMovie = await patchMovie(updatedMovieObj);
         console.log(updatedMovie);
