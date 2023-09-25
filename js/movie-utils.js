@@ -242,7 +242,7 @@ const renderModal = (movie, action) => {
                 <div class="d-flex flex-column gap-2 mb-2" style="color: black;">
                     <label for="Ratings">
                         Rating
-                        <input required type="number" name="Ratings" id="Rating" min="0" max="10" value="${movie?.Ratings ? movie.Ratings : ""}" />
+                        <input required type="number" name="Ratings" id="Rating" min="0" max="5" value="${movie?.Ratings ? movie.Ratings : ""}" />
                     </label>
                     <label for="id">
                         <input hidden required type="number" name="id" id="year" value="${movie?.id ? movie.id : ""}" />
