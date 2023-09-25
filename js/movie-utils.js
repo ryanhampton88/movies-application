@@ -17,8 +17,8 @@ const displayRomanceGenre = document.getElementById("display-romance");
 const displayAllGenres = document.getElementById("display-all");
 const displayDocumentaryGenre = document.getElementById("display-documentary");
 const loadingScreen = document.createElement("div");
-const loadingHtml = `<div class="d-flex justify-content-center align-items-center vw-100 h-100 display-1 loading">LOADING...</div>`
-const noMatchesFoundHtml =  `<div class="d-flex justify-content-center align-items-center vw-100 h-50 display-1 loading">No Matches Found...</div>`;
+const loadingHtml = `<div class="d-flex justify-content-center align-items-center vw-100 h-100 display-1 loading">LOADING...</div>`;
+const noMatchesFoundHtml = `<div class="d-flex justify-content-center align-items-center vw-100 h-50 display-1 loading">No Matches Found...</div>`;
 loadingScreen.innerHTML = loadingHtml;
 const bigMovieDisplay = document.getElementById("big-movie-display");
 
@@ -63,22 +63,20 @@ const clearBigMovieDisplay = () => {
 };
 
 
-
 ////validates add Movies form input, if valid, calls the searchMovieAndAdd function to try and add the movie to the local DB
 const inputValidation = () => {
     addMovieButton.addEventListener("click", async (e) => {
         e.preventDefault();
-        if (userRatingInput.value === "Rating" ) {
-            console.log(userRatingInput.value)
-            userRatingInput.setAttribute("style", "border: 2px solid red")
+        if (userRatingInput.value === "Rating") {
+            userRatingInput.setAttribute("style", "border: 2px solid red");
             userRatingInput.placeholder = "Selection Required";
             return;
         } else if (userTitleInput.value === "") {
             userTitleInput.setAttribute("style", "border: 2px solid red");
             userTitleInput.placeholder = "Input Required";
             return;
-        } else{
-            searchMovieAndAdd()
+        } else {
+            searchMovieAndAdd();
         }
 
     });
@@ -87,16 +85,13 @@ const inputValidation = () => {
 
 /////////takes user input and appends to URL, makes get request, if valid, grabs movie data, and passes it through postMovie to add it to the local DB /////////
 const searchMovieAndAdd = async () => {
-    console.log("did this work");
     let newTitle = userTitleInput.value;
     let newRating = userRatingInput.value;
-    console.log(newTitle);
-    console.log(newRating)
 //clears the input fields
     userTitleInput.value = "";
     userRatingInput.value = "";
 
-    let movie = await getMovie(strToStandardCase(newTitle))
+    let movie = await getMovie(strToStandardCase(newTitle));
 
     let newMovie = {
         "Title": `${movie.Title}`,
@@ -193,7 +188,7 @@ const postMovie = async (movie) => {
         const response = await fetch(url, options);
         const newId = await response.json();
         renderMovie(newId);
-        displayBigMovie(newId)
+        displayBigMovie(newId);
         return newId;
     } catch (error) {
         console.log(error);
@@ -229,6 +224,9 @@ const patchMovie = async (movie) => {
 //renders the edit or save
 const renderModal = (movie, action) => {
     const modal = document.createElement("div");
+    let existingGenres = movie.Genre;
+    let splitGenres = existingGenres.split(",");
+    console.log(splitGenres);
     modal.classList.add("modal");
     modal.innerHTML = `
         <div class="modal-bg"></div>
@@ -248,17 +246,21 @@ const renderModal = (movie, action) => {
                         <input hidden required type="number" name="id" id="id" value="${movie?.id ? movie.id : ""}" />
                     </label>
 
-               <select multiple class="form-select" aria-label="Multiple select example" name="Genre" id="Genre">
-                <option id ="Action" value="Action">Action</option>
-                <option id ="Adventure" value="Adventure">Adventure</option>
-                 <option id="Comedy" value="Comedy">Comedy</option>
-                <option id ="Horror" value="Horror">Horror</option>
-                <option id="Romance" value="Romance">Romance</option>
-                <option id ="Documentary" value="Documentary">Documentary</option>
-                </select>
+<!--               <select multiple class="form-select" aria-label="Multiple select example" name="Genre" id="Genre">-->
+<!--                <option id ="Action" value="Action">Action</option>-->
+<!--                <option id ="Adventure" value="Adventure">Adventure</option>-->
+<!--                 <option id="Comedy" value="Comedy">Comedy</option>-->
+<!--                <option id ="Horror" value="Horror">Horror</option>-->
+<!--                <option id="Romance" value="Romance">Romance</option>-->
+<!--                <option id ="Documentary" value="Documentary">Documentary</option>-->
+<!--                </select>-->
+                  <label><input type="checkbox" name="genres" value="Action"> Action </label>
+                  <label><input type="checkbox" name="genres" value="Adventure"> Adventure</label>
+                  <label><input type="checkbox" name="genres" value="Comedy"> Comedy</label>
+                  <label> <input type="checkbox" name="genres" value="Horror"> Horror</label>
+                  <label> <input type="checkbox" name="genres" value="Romance"> Romance</label>
+                  <label> <input type="checkbox" name="genres" value="Documentary"> Documentary</label>
                     </div>
-                    
-         
                     <div class="modal-form-actions">
                         <button type="submit" class="btn btn-cta btn-secondary" data-action="${action}">${action}</button>
                         <button type="button" class="btn btn-secondary" data-action="cancel">Cancel</button>
@@ -271,7 +273,7 @@ const renderModal = (movie, action) => {
     //nodes from the modal for event listeners
     const modalForm = modal.querySelector("#movie-form");
     const modalClose = modal.querySelector(".modal-close");
-    const modalBackground = modal.querySelector(".modal-bg")
+    const modalBackground = modal.querySelector(".modal-bg");
     const modalFormCancel = modal.querySelector("[data-action='cancel']");
     const modalFormSave = modal.querySelector("[data-action='save']");
 
@@ -297,27 +299,28 @@ const renderModal = (movie, action) => {
         e.preventDefault();
         let movieId = document.getElementById("id").value;
         let newRating = document.getElementById("Ratings").value;
-        console.log(typeof newRating)
-        let genreList = document.getElementById("Genre");
-        console.log(movieId);
-        let genreArr = [];
 
-        for (let i = 0; i < genreList.options.length; i+=1) {
-            if (genreList.options[i].selected) {
-                genreArr.push(genreList.options[i].text)
+        for (let i = 0; i < modalForm.genres.length; i++) {
+            if (modalForm.genres[i].checked) {
+                modalForm.genres[i].value
+                if (splitGenres.includes(modalForm.genres[i].value)) {
+                    continue;
+                } else if (!splitGenres.includes(modalForm.genres[i].value)) {
+                    splitGenres.push(modalForm.genres[i].value);
+                }
             }
-
         }
-        let newGenres= (genreArr.join(","));
 
-       let updatedMovieObj = {
+        let newGenres = (splitGenres.join(","));
+
+        let updatedMovieObj = {
             id: `${movieId}`,
-           Ratings: `${newRating}`,
-           Genre: `${newGenres}`
-       }
+            Ratings: `${newRating}`,
+            Genre: `${newGenres}`
+        };
 
         let updatedMovie = await patchMovie(updatedMovieObj);
-        console.log(updatedMovie);
+
         alert(`${movie.Title} has been updated.`);
         let refreshedMovies = await getLocalMovie();
         refreshedMovies.forEach((movie) => {
@@ -337,25 +340,25 @@ const renderMovie = (movie) => {
     let ratingHtml = ``;
 
     if (Number(movie.Ratings) < 2) {
-        ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>`
+        ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>`;
     } else if (Number(movie.Ratings) < 3) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
-                      <a  href="#" class="star-icon">&#9733;</a>`
+                      <a  href="#" class="star-icon">&#9733;</a>`;
     } else if (Number(movie.Ratings) < 4) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
-                      <a  href="#" class="star-icon">&#9733;</a>`
+                      <a  href="#" class="star-icon">&#9733;</a>`;
     } else if (Number(movie.Ratings) < 5) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
-                      <a  href="#" class="star-icon">&#9733;</a>`
+                      <a  href="#" class="star-icon">&#9733;</a>`;
     } else if (Number(movie.Ratings) < 6) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
-                      <a  href="#" class="star-icon">&#9733;</a>`
+                      <a  href="#" class="star-icon">&#9733;</a>`;
     }
 
     movieCard.classList.add("carousel-card");
@@ -488,7 +491,7 @@ const movieSeachByInputMatch = () => {
         movieSearchMatch.forEach((movie) => {
             renderMovie(movie);
         });
-        displayBigMovie(movieSearchMatch[movieSearchMatch.length-1])
+        displayBigMovie(movieSearchMatch[movieSearchMatch.length - 1]);
     });
 };
 
@@ -515,7 +518,7 @@ const displayActionMovies = () => {
             actionMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(actionMovies[actionMovies.length-1])
+            displayBigMovie(actionMovies[actionMovies.length - 1]);
         }
     });
 
@@ -542,7 +545,7 @@ const displayAdventureMovies = () => {
             adventureMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(adventureMovies[adventureMovies.length-1])
+            displayBigMovie(adventureMovies[adventureMovies.length - 1]);
         }
     });
 
@@ -569,7 +572,7 @@ const displayComedyMovies = () => {
             comedyMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(comedyMovies[comedyMovies.length-1])
+            displayBigMovie(comedyMovies[comedyMovies.length - 1]);
         }
     });
 };
@@ -595,7 +598,7 @@ const displayHorrorMovies = () => {
             horrorMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(horrorMovies[horrorMovies.length-1])
+            displayBigMovie(horrorMovies[horrorMovies.length - 1]);
         }
     });
 };
@@ -621,7 +624,7 @@ const displayRomanceMovies = () => {
             romanceMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(romanceMovies[romanceMovies.length-1])
+            displayBigMovie(romanceMovies[romanceMovies.length - 1]);
         }
     });
 };
@@ -648,7 +651,7 @@ const displayDocumentaryMovies = () => {
             documentaryMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-                displayBigMovie(documentaryMovies[documentaryMovies.length-1])
+            displayBigMovie(documentaryMovies[documentaryMovies.length - 1]);
         }
 
     });
@@ -661,7 +664,7 @@ const displayAllMovies = () => {
         localMovies.forEach((movie) => {
             renderMovie(movie);
         });
-        displayBigMovie(localMovies[localMovies.length-1])
+        displayBigMovie(localMovies[localMovies.length - 1]);
 
     });
 

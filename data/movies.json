@@ -94,7 +94,7 @@
     {
       "Title": "It",
       "Ratings": "2",
-      "Genre": "Horror",
+      "Genre": "Horror,Comedy,Adventure",
       "Plot": "In the summer of 1989, a group of bullied kids band together to destroy a shape-shifting monster, which disguises itself as a clown and preys on the children of Derry, their small Maine town.",
       "Poster": "https://m.media-amazon.com/images/M/MV5BZDVkZmI0YzAtNzdjYi00ZjhhLWE1ODEtMWMzMWMzNDA0NmQ4XkEyXkFqcGdeQXVyNzYzODM3Mzg@._V1_SX300.jpg",
       "Year": "2017",
@@ -103,45 +103,6 @@
       "Actors": "Bill Skarsgård, Jaeden Martell, Finn Wolfhard",
       "Runtime": "135 min",
       "id": 10
-    },
-    {
-      "Title": "Halloween",
-      "Ratings": "2",
-      "Genre": "Horror, Thriller",
-      "Plot": "Fifteen years after murdering his sister on Halloween night 1963, Michael Myers escapes from a mental hospital and returns to the small town of Haddonfield, Illinois to kill again.",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BNzk1OGU2NmMtNTdhZC00NjdlLWE5YTMtZTQ0MGExZTQzOGQyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-      "Year": "1978",
-      "Director": "John Carpenter",
-      "Rated": "R",
-      "Actors": "Donald Pleasence, Jamie Lee Curtis, Tony Moran",
-      "Runtime": "91 min",
-      "id": 11
-    },
-    {
-      "Title": "Just Go with It",
-      "Ratings": "5",
-      "Genre": "Action,Adventure,Comedy,Horror",
-      "Plot": "On a weekend trip to Hawaii, a plastic surgeon convinces his loyal assistant to pose as his soon-to-be-divorced wife in order to cover up a careless lie he told to his much-younger girlfriend.",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BMTM3MzM3NDE5MV5BMl5BanBnXkFtZTcwNDE5MTUxNA@@._V1_SX300.jpg",
-      "Year": "2011",
-      "Director": "Dennis Dugan",
-      "Rated": "PG-13",
-      "Actors": "Adam Sandler, Jennifer Aniston, Brooklyn Decker",
-      "Runtime": "117 min",
-      "id": 12
-    },
-    {
-      "Title": "Wrong Turn",
-      "Ratings": "4",
-      "Genre": "Horror, Thriller, Funny",
-      "Plot": "Chris and a group of five friends are left stranded deep in the middle of the woods after their cars collide. As they venture deeper into the woods, they face an uncertain and bloodcurdling fate.",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BMTQwMTkyMTY4M15BMl5BanBnXkFtZTYwMDc0NDE3._V1_SX300.jpg",
-      "Year": "2003",
-      "Director": "Rob Schmidt",
-      "Rated": "R",
-      "Actors": "Eliza Dushku, Jeremy Sisto, Emmanuelle Chriqui",
-      "Runtime": "84 min",
-      "id": 13
     }
   ]
 }
