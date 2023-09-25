@@ -9,7 +9,6 @@ const movieSearchInput = document.getElementById("movie-search");
 const userTitleInput = document.getElementById("user-title");
 const userRatingInput = document.getElementById("user-rating");
 const movieDisplay = document.getElementById("display-movies");
-const loadingScreen = document.createElement("div");
 const displayActionGenre = document.getElementById("display-action");
 const displayAdventureGenre = document.getElementById("display-adventure");
 const displayComedyGenre = document.getElementById("display-comedy");
@@ -17,10 +16,10 @@ const displayHorrorGenre = document.getElementById("display-horror");
 const displayRomanceGenre = document.getElementById("display-romance");
 const displayAllGenres = document.getElementById("display-all");
 const displayDocumentaryGenre = document.getElementById("display-documentary");
-loadingScreen.innerHTML =
-    `
-     <div class="d-flex justify-content-center align-items-center w-100 h-100 display-1">LOADING...</div>
-`;
+const loadingScreen = document.createElement("div");
+const loadingHtml = `<div class="d-flex justify-content-center align-items-center vw-100 h-100 display-1 loading">LOADING...</div>`
+const noMatchesFoundHtml =  `<div class="d-flex justify-content-center align-items-center vw-100 h-50 display-1 loading">No Matches Found...</div>`;
+loadingScreen.innerHTML = loadingHtml;
 
 
 //runs on initial page load to render all movies that exist in the local DB
@@ -394,10 +393,11 @@ function displayBigMovie(movie) {
     const bigMovieDisplay = document.getElementById("big-movie-display");
     // bigMovieDisplay.setAttribute("style", `background-image: url('${movie.Poster}'); background-repeat: no-repeat;`)
     bigMovieDisplay.innerHTML = `
-             <p class="d-flex flex-column display-3 fw-bolder">${movie.Title}</p>
-        <div class="d-flex gap-4"><p><span class="fw-bold">Rating:</span> ${movie.Ratings} / 5</p>
+             <p class="d-flex flex-column display-3 fw-bolder movie-title">${movie.Title}</p>
+        <div class="d-flex gap-4"><p><span class="fw-bold">Rating:</span> &#9733; ${movie.Ratings} / 5</p>
           <p><span class="fw-bold">Released:</span> ${movie.Year}</p>
-          <p><span class="fw-bold">Genre:</span> ${movie.Genre}</p></div>
+          <p><span class="fw-bold">Genre:</span> ${movie.Genre}</p>
+          <p><span class="fw-bold">Runtime:</span> ${movie.Runtime}</p></div>
           <div class="my-2 text wrap w-50"><span class="fw-bold">Actors:</span> ${movie.Actors}</div>
         <div class="my-2 text wrap w-50">${movie.Plot}</div>
         </div>   
@@ -478,7 +478,7 @@ const displayActionMovies = () => {
         });
         if (actionMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
             clearMovieDisplay();
@@ -504,7 +504,7 @@ const displayAdventureMovies = () => {
         });
         if (adventureMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
             clearMovieDisplay();
@@ -530,7 +530,7 @@ const displayComedyMovies = () => {
         });
         if (comedyMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
             clearMovieDisplay();
@@ -555,7 +555,7 @@ const displayHorrorMovies = () => {
         });
         if (horrorMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
             clearMovieDisplay();
@@ -580,7 +580,7 @@ const displayRomanceMovies = () => {
         });
         if (romanceMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
             clearMovieDisplay();
@@ -606,7 +606,7 @@ const displayDocumentaryMovies = () => {
         console.log(documentaryMovies);
         if (documentaryMovies.length === 0) {
             clearMovieDisplay();
-            movieDisplay.innerHTML = `<h1>No matches found.</h1>`;
+            movieDisplay.innerHTML = noMatchesFoundHtml;
             console.log("no matches");
         } else {
             clearMovieDisplay();

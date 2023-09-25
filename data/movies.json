@@ -40,19 +40,6 @@
       "id": 3
     },
     {
-      "Title": "The Pursuit of Happiness",
-      "Ratings": "5",
-      "Genre": "Crime, Drama",
-      "Plot": "A young college student is sent to prison as much for killing a pedestrian with his car as for not paying his parking tickets. When the opportunity presents itself he escapes and is subsequently on the run with his girlfriend. But...",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BMjI5ZjJiZjUtNmYzNC00ODg2LTg5OGUtNGE5MmMzYzk2MDBjXkEyXkFqcGdeQXVyNzc5MjA3OA@@._V1_SX300.jpg",
-      "Year": "1971",
-      "Director": "Robert Mulligan",
-      "Rated": "PG-13",
-      "Actors": "Michael Sarrazin, Barbara Hershey, Arthur Hill",
-      "Runtime": "93 min",
-      "id": 4
-    },
-    {
       "Title": "The Avengers",
       "Ratings": "3",
       "Genre": "Action, Sci-Fi",
@@ -105,19 +92,6 @@
       "id": 8
     },
     {
-      "Title": "Snow White",
-      "Ratings": "1",
-      "Genre": "Family, Fantasy, Musical",
-      "Plot": "The ageless tale of a beautiful young princess whose jealous stepmother orders her killed so that she will be 'the fairest in the land.' When the huntsman takes pity on her, he takes her to the house of the seven dwarfs.",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BMjliMjBkNzctZjUxYi00NmUzLTg2NmYtZGEyY2IyYzI2ZTkzXkEyXkFqcGdeQXVyMTY5Nzc4MDY@._V1_SX300.jpg",
-      "Year": "1987",
-      "Director": "Michael Berz",
-      "Rated": "PG",
-      "Actors": "Diana Rigg, Billy Barty, Sarah Patterson",
-      "Runtime": "85 min",
-      "id": 9
-    },
-    {
       "Title": "It",
       "Ratings": "2",
       "Genre": "Horror",
@@ -142,6 +116,32 @@
       "Actors": "Donald Pleasence, Jamie Lee Curtis, Tony Moran",
       "Runtime": "91 min",
       "id": 11
+    },
+    {
+      "Title": "Just Go with It",
+      "Ratings": "4",
+      "Genre": "Comedy, Romance",
+      "Plot": "On a weekend trip to Hawaii, a plastic surgeon convinces his loyal assistant to pose as his soon-to-be-divorced wife in order to cover up a careless lie he told to his much-younger girlfriend.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMTM3MzM3NDE5MV5BMl5BanBnXkFtZTcwNDE5MTUxNA@@._V1_SX300.jpg",
+      "Year": "2011",
+      "Director": "Dennis Dugan",
+      "Rated": "PG-13",
+      "Actors": "Adam Sandler, Jennifer Aniston, Brooklyn Decker",
+      "Runtime": "117 min",
+      "id": 12
+    },
+    {
+      "Title": "Wrong Turn",
+      "Ratings": "2",
+      "Genre": "Horror, Thriller",
+      "Plot": "Chris and a group of five friends are left stranded deep in the middle of the woods after their cars collide. As they venture deeper into the woods, they face an uncertain and bloodcurdling fate.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMTQwMTkyMTY4M15BMl5BanBnXkFtZTYwMDc0NDE3._V1_SX300.jpg",
+      "Year": "2003",
+      "Director": "Rob Schmidt",
+      "Rated": "R",
+      "Actors": "Eliza Dushku, Jeremy Sisto, Emmanuelle Chriqui",
+      "Runtime": "84 min",
+      "id": 13
     }
   ]
 }
