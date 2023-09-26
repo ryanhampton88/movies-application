@@ -17,15 +17,14 @@ const displayRomanceGenre = document.getElementById("display-romance");
 const displayAllGenres = document.getElementById("display-all");
 const displayDocumentaryGenre = document.getElementById("display-documentary");
 const loadingScreen = document.createElement("div");
-const loadingHtml = `<div class="d-flex justify-content-center align-items-center vw-100 h-100 display-1 loading">LOADING...</div>`
-const noMatchesFoundHtml =  `<div class="d-flex justify-content-center align-items-center vw-100 h-50 display-1 loading">No Matches Found...</div>`;
+const loadingHtml = `<div class="d-flex justify-content-center align-items-center vw-100 h-100 display-1 loading">LOADING...</div>`;
+const noMatchesFoundHtml = `<div class="d-flex justify-content-center align-items-center vw-100 h-50 display-1 loading">No Matches Found...</div>`;
 loadingScreen.innerHTML = loadingHtml;
 const bigMovieDisplay = document.getElementById("big-movie-display");
 
 
 //runs on initial page load to render all movies that exist in the local DB
 const onPageLoad = async () => {
-
     addEventListener("load", async (e) => {
         movieDisplay.appendChild(loadingScreen);
         let localMovie = await getlocalMovieDb();
@@ -34,8 +33,8 @@ const onPageLoad = async () => {
             renderMovie(movie);
         });
         defaultBigMovie();
-    });
-};
+    })
+}
 
 
 /////////////////Gets a movie from the API, takes a string movie title as an input, returns 1 movie object////////////////
@@ -63,22 +62,20 @@ const clearBigMovieDisplay = () => {
 };
 
 
-
 ////validates add Movies form input, if valid, calls the searchMovieAndAdd function to try and add the movie to the local DB
 const inputValidation = () => {
     addMovieButton.addEventListener("click", async (e) => {
         e.preventDefault();
-        if (userRatingInput.value === "Rating" ) {
-            console.log(userRatingInput.value)
-            userRatingInput.setAttribute("style", "border: 2px solid red")
+        if (userRatingInput.value === "Rating") {
+            userRatingInput.setAttribute("style", "border: 2px solid red");
             userRatingInput.placeholder = "Selection Required";
             return;
         } else if (userTitleInput.value === "") {
             userTitleInput.setAttribute("style", "border: 2px solid red");
             userTitleInput.placeholder = "Input Required";
             return;
-        } else{
-            searchMovieAndAdd()
+        } else {
+            searchMovieAndAdd();
         }
 
     });
@@ -87,16 +84,13 @@ const inputValidation = () => {
 
 /////////takes user input and appends to URL, makes get request, if valid, grabs movie data, and passes it through postMovie to add it to the local DB /////////
 const searchMovieAndAdd = async () => {
-    console.log("did this work");
     let newTitle = userTitleInput.value;
     let newRating = userRatingInput.value;
-    console.log(newTitle);
-    console.log(newRating)
 //clears the input fields
     userTitleInput.value = "";
     userRatingInput.value = "";
 
-    let movie = await getMovie(strToStandardCase(newTitle))
+    let movie = await getMovie(strToStandardCase(newTitle));
 
     let newMovie = {
         "Title": `${movie.Title}`,
@@ -111,6 +105,8 @@ const searchMovieAndAdd = async () => {
         "Runtime": `${movie.Runtime}`,
 
     };
+
+    //removes the input validation if they were triggered before a valid submit
     userRatingInput.removeAttribute("style", "border: 2px solid red");
     userRatingInput.placeholder = "Rating";
     userTitleInput.removeAttribute("style", "border: 2px solid red");
@@ -173,7 +169,7 @@ const searchMovieByTitle = async (title) => {
 ////////////////takes in a Movie object as an argument, then posts the object to the local DB, then renders in on screen////////////
 const postMovie = async (movie) => {
     try {
-        // //todo: validate movie isn't already in the database
+        //validates movie isn't already in the database
         const searchResult = await searchMovieByTitle(movie.Title);
         if (searchResult.length > 0) {
             //movie already exists
@@ -193,7 +189,7 @@ const postMovie = async (movie) => {
         const response = await fetch(url, options);
         const newId = await response.json();
         renderMovie(newId);
-        displayBigMovie(newId)
+        displayBigMovie(newId);
         return newId;
     } catch (error) {
         console.log(error);
@@ -229,12 +225,15 @@ const patchMovie = async (movie) => {
 //renders the edit or save
 const renderModal = (movie, action) => {
     const modal = document.createElement("div");
+    let existingGenres = movie.Genre;
+    let splitGenres = existingGenres.split(",");
+    console.log(splitGenres);
     modal.classList.add("modal");
     modal.innerHTML = `
         <div class="modal-bg"></div>
         <div class="modal-content" style="background-color: white;">
             <div class="modal-header">
-                <h2 class="modal-title" style="color: red; font-family: Bebas Neue;">${movie?.Title ? movie.Title : ""}</h2>
+                <h2 class="modal-title" style="color: red; font-family: Bebas Neue;">${movie.Title}</h2>
                 <span class="modal-close">&times;</span>
             </div>
             <div class="modal-body">
@@ -242,15 +241,19 @@ const renderModal = (movie, action) => {
                 <div class="d-flex flex-column gap-2 mb-2" style="color: black;">
                     <label for="Ratings">
                         Rating
+
                         <input required type="number" name="Ratings" id="Rating" min="0" max="5" value="${movie?.Ratings ? movie.Ratings : ""}" />
+
                     </label>
                     <label for="id">
-                        <input hidden required type="number" name="id" id="year" value="${movie?.id ? movie.id : ""}" />
+                        <input hidden required type="number" name="id" id="id" value="${movie.id}" />
                     </label>
-                    <label for="Genre" class="d-flex align-items-center gap-1">
-                        Genre
-                        <textarea name="Genre" id="description">${movie?.Genre ? movie.Genre : ""}</textarea>
-                    </label>
+                    <label><input type="checkbox" name="genres" value="Action"> Action </label>
+                    <label><input type="checkbox" name="genres" value="Adventure"> Adventure</label>
+                    <label><input type="checkbox" name="genres" value="Comedy"> Comedy</label>
+                    <label> <input type="checkbox" name="genres" value="Horror"> Horror</label>
+                    <label> <input type="checkbox" name="genres" value="Romance"> Romance</label>
+                    <label> <input type="checkbox" name="genres" value="Documentary"> Documentary</label>
                     </div>
                     <div class="modal-form-actions">
                         <button type="submit" class="btn btn-cta btn-secondary" data-action="${action}">${action}</button>
@@ -264,7 +267,7 @@ const renderModal = (movie, action) => {
     //nodes from the modal for event listeners
     const modalForm = modal.querySelector("#movie-form");
     const modalClose = modal.querySelector(".modal-close");
-    const modalBackground = modal.querySelector(".modal-bg")
+    const modalBackground = modal.querySelector(".modal-bg");
     const modalFormCancel = modal.querySelector("[data-action='cancel']");
     const modalFormSave = modal.querySelector("[data-action='save']");
 
@@ -285,15 +288,36 @@ const renderModal = (movie, action) => {
         e.preventDefault();
         modal.remove();
     });
-    // event listener for save button, captures the submitted form data to patch updates to the changed movie properties
-    modalForm.addEventListener("submit", async (e) => {
+    // event listener for save button, captures the submitted form input values to patch updates to the changed movie properties
+    modalFormSave.addEventListener("click", async (e) => {
         e.preventDefault();
-        let updatedMovieData = new FormData(modalForm, modalFormSave);
-        let updatedMovieObj = Object.fromEntries(updatedMovieData);
-        console.log(updatedMovieObj);
+        let movieId = document.getElementById("id").value;
+        let newRating = document.getElementById("Ratings").value;
 
-        let updatedMovie = await patchMovie(updatedMovieObj);
-        console.log(updatedMovie);
+        //loops through the checkboxes, if they are checked, looks to see if the movie already has those genres, if it does not, adds the new genres.
+        for (let i = 0; i < modalForm.genres.length; i++) {
+            if (modalForm.genres[i].checked) {
+                modalForm.genres[i].value
+                if (splitGenres.includes(modalForm.genres[i].value)) {
+                    continue;
+                } else if (!splitGenres.includes(modalForm.genres[i].value)) {
+                    splitGenres.push(modalForm.genres[i].value);
+                }
+            }
+        }
+
+
+        let newGenres = (splitGenres.join(","));
+
+        let updatedMovieObj = {
+            id: `${movieId}`,
+            Ratings: `${newRating}`,
+            Genre: `${newGenres}`
+        };
+
+        //posts the updates to the DB
+        await patchMovie(updatedMovieObj);
+
         alert(`${movie.Title} has been updated.`);
         let refreshedMovies = await getLocalMovie();
         refreshedMovies.forEach((movie) => {
@@ -312,28 +336,32 @@ const renderMovie = (movie) => {
     const movieDisplay = document.getElementById("display-movies");
     let ratingHtml = ``;
 
+
+//determines how many stars should be included in movie card html based on the rating stored in the movie object
     if (Number(movie.Ratings) < 2) {
-        ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>`
+        ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>`;
     } else if (Number(movie.Ratings) < 3) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
-                      <a  href="#" class="star-icon">&#9733;</a>`
+                      <a  href="#" class="star-icon">&#9733;</a>`;
     } else if (Number(movie.Ratings) < 4) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
-                      <a  href="#" class="star-icon">&#9733;</a>`
+                      <a  href="#" class="star-icon">&#9733;</a>`;
     } else if (Number(movie.Ratings) < 5) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
-                      <a  href="#" class="star-icon">&#9733;</a>`
+                      <a  href="#" class="star-icon">&#9733;</a>`;
     } else if (Number(movie.Ratings) < 6) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
-                      <a  href="#" class="star-icon">&#9733;</a>`
+                      <a  href="#" class="star-icon">&#9733;</a>`;
     }
 
+
+    //builds the html for the Big Movie Display (hero section)
     movieCard.classList.add("carousel-card");
     movieCard.classList.add("card-animation");
     movieCard.setAttribute("style", `background-image: url('${movie.Poster}')`);
@@ -355,7 +383,7 @@ const renderMovie = (movie) => {
     `;
 
 
-    // const test = Array.from(document.querySelectorAll(movieCard[movie.id]));
+    //event listener, displays Big Movie details for the movie card that is clicked
     movieCard.addEventListener("click", () => {
         displayBigMovie(movie);
     });
@@ -368,7 +396,7 @@ const renderMovie = (movie) => {
     editBtn.addEventListener("click", async (e) => {
         e.preventDefault();
         console.log("click");
-        //renders the modal for user to edit the movie, then save the changes to the local DB
+        //renders the modal for user to edit the movie, then saves the changes to the local DB
         renderModal(movie, "save");
 
     });
@@ -377,21 +405,23 @@ const renderMovie = (movie) => {
     deleteBtn.addEventListener("click", async (e) => {
         e.preventDefault();
         alert(`${movie.Title} was deleted.`);
+        //remove the card from the DOM
         movieCard.remove();
+        //deletes the movie from the local DB
         await deleteMovie(movie);
     });
 
-    // prepends to targeted DOM element, so most recently added movies are displayed in the list First
+    // prepends to targeted DOM element, so most recently added movies are displayed in the list FIRST
     movieDisplay.prepend(movieCard);
 };
 
 
 //displays big movie details for first movie in the local DB, will run on initial page load
+//also runs when specific Genre links are clicked to display the first movie in that specific genre list
 let defaultBigMovie = async () => {
     let movies = await getlocalMovieDb();
     displayBigMovie(movies[movies.length - 1]);
 };
-
 
 // take a movie object as an argument, then displays that movie objects details in the big-movie display div
 // called in displayActionMovies, displayAdventureMovies ect.....
@@ -408,7 +438,6 @@ function displayBigMovie(movie) {
         </div>   
     `;
 }
-
 
 //deletes a movie object from the local JSON DB
 const deleteMovie = async (movie) => {
@@ -464,12 +493,12 @@ const movieSeachByInputMatch = () => {
         movieSearchMatch.forEach((movie) => {
             renderMovie(movie);
         });
-        displayBigMovie(movieSearchMatch[movieSearchMatch.length-1])
+        displayBigMovie(movieSearchMatch[movieSearchMatch.length - 1]);
     });
 };
 
 
-/*Below functions are event listener for filter by Genre links, renders the movies that include the Genre when the specified genre link is clicked*/
+/*Below functions are event listeners for filter by Genre links, renders the movies that include the Genre when the specified genre link is clicked*/
 const displayActionMovies = () => {
     displayActionGenre.addEventListener(`click`, async (e) => {
         e.preventDefault();
@@ -491,7 +520,7 @@ const displayActionMovies = () => {
             actionMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(actionMovies[actionMovies.length-1])
+            displayBigMovie(actionMovies[actionMovies.length - 1]);
         }
     });
 
@@ -518,7 +547,7 @@ const displayAdventureMovies = () => {
             adventureMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(adventureMovies[adventureMovies.length-1])
+            displayBigMovie(adventureMovies[adventureMovies.length - 1]);
         }
     });
 
@@ -545,7 +574,7 @@ const displayComedyMovies = () => {
             comedyMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(comedyMovies[comedyMovies.length-1])
+            displayBigMovie(comedyMovies[comedyMovies.length - 1]);
         }
     });
 };
@@ -571,7 +600,7 @@ const displayHorrorMovies = () => {
             horrorMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(horrorMovies[horrorMovies.length-1])
+            displayBigMovie(horrorMovies[horrorMovies.length - 1]);
         }
     });
 };
@@ -597,7 +626,7 @@ const displayRomanceMovies = () => {
             romanceMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-            displayBigMovie(romanceMovies[romanceMovies.length-1])
+            displayBigMovie(romanceMovies[romanceMovies.length - 1]);
         }
     });
 };
@@ -624,7 +653,7 @@ const displayDocumentaryMovies = () => {
             documentaryMovies.forEach((movie) => {
                 renderMovie(movie);
             });
-                displayBigMovie(documentaryMovies[documentaryMovies.length-1])
+            displayBigMovie(documentaryMovies[documentaryMovies.length - 1]);
         }
 
     });
@@ -637,7 +666,7 @@ const displayAllMovies = () => {
         localMovies.forEach((movie) => {
             renderMovie(movie);
         });
-        displayBigMovie(localMovies[localMovies.length-1])
+        displayBigMovie(localMovies[localMovies.length - 1]);
 
     });
 
