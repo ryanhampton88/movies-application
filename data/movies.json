@@ -14,19 +14,6 @@
       "id": 1
     },
     {
-      "Title": "The Breakfast Club",
-      "Ratings": "5",
-      "Genre": "Comedy, Drama",
-      "Plot": "Five high school students meet in Saturday detention and discover how they have a great deal more in common than they thought.",
-      "Poster": "https://m.media-amazon.com/images/M/MV5BOTM5N2ZmZTMtNjlmOS00YzlkLTk3YjEtNTU1ZmQ5OTdhODZhXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-      "Year": "1985",
-      "Director": "John Hughes",
-      "Rated": "R",
-      "Actors": "Emilio Estevez, Judd Nelson, Molly Ringwald",
-      "Runtime": "97 min",
-      "id": 2
-    },
-    {
       "Title": "John Wick",
       "Ratings": "4",
       "Genre": "Action, Crime, Thriller",
@@ -103,6 +90,58 @@
       "Actors": "Bill Skarsgård, Jaeden Martell, Finn Wolfhard",
       "Runtime": "135 min",
       "id": 10
+    },
+    {
+      "Title": "Halloween",
+      "Ratings": "1",
+      "Genre": "Horror, Thriller",
+      "Plot": "Fifteen years after murdering his sister on Halloween night 1963, Michael Myers escapes from a mental hospital and returns to the small town of Haddonfield, Illinois to kill again.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNzk1OGU2NmMtNTdhZC00NjdlLWE5YTMtZTQ0MGExZTQzOGQyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+      "Year": "1978",
+      "Director": "John Carpenter",
+      "Rated": "R",
+      "Actors": "Donald Pleasence, Jamie Lee Curtis, Tony Moran",
+      "Runtime": "91 min",
+      "id": 11
+    },
+    {
+      "Title": "Midnight in Paris",
+      "Ratings": "4",
+      "Genre": "Comedy, Fantasy, Romance",
+      "Plot": "While on a trip to Paris with his fiancée's family, a nostalgic screenwriter finds himself mysteriously going back to the 1920s every day at midnight.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMTM4NjY1MDQwMl5BMl5BanBnXkFtZTcwNTI3Njg3NA@@._V1_SX300.jpg",
+      "Year": "2011",
+      "Director": "Woody Allen",
+      "Rated": "PG-13",
+      "Actors": "Owen Wilson, Rachel McAdams, Kathy Bates",
+      "Runtime": "94 min",
+      "id": 12
+    },
+    {
+      "Title": "The Ring",
+      "Ratings": "3",
+      "Genre": "Horror, Mystery",
+      "Plot": "A journalist must investigate a mysterious videotape which seems to cause the death of anyone one week to the day after they view it.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNDA2NTg2NjE4Ml5BMl5BanBnXkFtZTYwMjYxMDg5._V1_SX300.jpg",
+      "Year": "2002",
+      "Director": "Gore Verbinski",
+      "Rated": "PG-13",
+      "Actors": "Naomi Watts, Martin Henderson, Brian Cox",
+      "Runtime": "115 min",
+      "id": 13
+    },
+    {
+      "Title": "The Breakfast Club",
+      "Ratings": "5",
+      "Genre": "Comedy, Drama",
+      "Plot": "Five high school students meet in Saturday detention and discover how they have a great deal more in common than they thought.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BOTM5N2ZmZTMtNjlmOS00YzlkLTk3YjEtNTU1ZmQ5OTdhODZhXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+      "Year": "1985",
+      "Director": "John Hughes",
+      "Rated": "R",
+      "Actors": "Emilio Estevez, Judd Nelson, Molly Ringwald",
+      "Runtime": "97 min",
+      "id": 14
     }
   ]
 }
