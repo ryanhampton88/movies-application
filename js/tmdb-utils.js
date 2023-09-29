@@ -1,5 +1,5 @@
 import {
-    TMDB_KEY
+    TMDB_KEY, TMDB_TOKEN
 } from "./keys.js";
 import {strToStandardCase} from "./js-utils.js";
 
@@ -42,7 +42,7 @@ const getTmdbMovies = async (title) => {
         method: "GET",
         headers: {
             accept: "application/json",
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDVhODU2NzM1YWZiYzBmM2RiMzhiNzUzODlmZGZmNyIsInN1YiI6IjY1MGM1NjI5NGRhM2Q0MDE0ZDU1ZWJiMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kdRqgsp_HWv4gAIEE6pdhQhNktR3HQyFL-IAowwf0Ts"
+            Authorization: `Bearer ${TMDB_TOKEN}`
         }
     };
 
@@ -57,7 +57,7 @@ const getTmdbMovieDetails = async (id) => {
         method: "GET",
         headers: {
             accept: "application/json",
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDVhODU2NzM1YWZiYzBmM2RiMzhiNzUzODlmZGZmNyIsInN1YiI6IjY1MGM1NjI5NGRhM2Q0MDE0ZDU1ZWJiMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kdRqgsp_HWv4gAIEE6pdhQhNktR3HQyFL-IAowwf0Ts"
+            Authorization: `Bearer ${TMDB_TOKEN}`
         }
     };
 
@@ -74,7 +74,7 @@ https://api.themoviedb.org/3/movie/${id}/videos`;
         method: "GET",
         headers: {
             accept: "application/json",
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDVhODU2NzM1YWZiYzBmM2RiMzhiNzUzODlmZGZmNyIsInN1YiI6IjY1MGM1NjI5NGRhM2Q0MDE0ZDU1ZWJiMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kdRqgsp_HWv4gAIEE6pdhQhNktR3HQyFL-IAowwf0Ts"
+            Authorization: `Bearer ${TMDB_TOKEN}`
         }
     };
     let response = await fetch(url, options);
@@ -88,7 +88,7 @@ const getTmdbMovieCast = async (id) => {
         method: "GET",
         headers: {
             accept: "application/json",
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDVhODU2NzM1YWZiYzBmM2RiMzhiNzUzODlmZGZmNyIsInN1YiI6IjY1MGM1NjI5NGRhM2Q0MDE0ZDU1ZWJiMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kdRqgsp_HWv4gAIEE6pdhQhNktR3HQyFL-IAowwf0Ts"
+            Authorization: `Bearer ${TMDB_TOKEN}`
         }
     };
     let response = await fetch(url, options);
@@ -118,9 +118,9 @@ const renderAddMovieModal = (movie) => {
             <div class="modal-body">
                 <form class="modal-form d-flex flex-column align-items-center" id="movie-form">
                 <div class="d-flex flex-column gap-2 mb-2" style="color: black;">
-                    <label for="Ratings">
+                    <label for="Rating">
                         Rating
-                        <input required type="number" name="Ratings" id="Ratings" min="0" max="5" value="5" />
+                        <input required type="number" name="Rating" id="Rating" min="0" max="5" value="5" />
                     </label>
                     <label for="id">
                         <input hidden required type="number" name="id" id="id" value="${movie.id}" />
@@ -153,6 +153,10 @@ const renderAddMovieModal = (movie) => {
     modalFormSave.addEventListener("click", async (e) => {
         //bucket for the new movie object
         let newMovie;
+
+        const ratingSelect = addMovieModalForm.querySelector("#Rating");
+        let userRating = ratingSelect.value;
+
         //gets the movie details from the API
         let movieDetails = await getTmdbMovieDetails(movie.id);
         let movieGenresArr = [];
@@ -165,10 +169,18 @@ const renderAddMovieModal = (movie) => {
 
         //gets the movie trailers from the API
         let movieTrailers = await getTmdbMovieTrailers(movie.id);
+        console.log(movieTrailers);
+        let trailorKey;
+        if (movieTrailers.results.length === 0) {
+            trailorKey = "No Trailor Available";
+        } else {
+            trailorKey = movieTrailers.results[0].key;
+        }
 
 
         newMovie = {
             "Title": `${movie.title}`,
+            "Rating": `${userRating}`,
             "ApiId": `${movie.id}`,
             "Genre": `${movieGenres}`,
             "Overview": `${movie.overview}`,
@@ -176,7 +188,7 @@ const renderAddMovieModal = (movie) => {
             "Year": `${movie.release_date}`,
             "Runtime": `${movieDetails.runtime}`,
             "IMDBid": `${movieDetails.imdb_id}`,
-            "Trailer": `${movieTrailers.results[0].key}`
+            "Trailer": `${trailorKey}`
         };
         await postMovie(newMovie);
         document.body.removeChild(addMovieModalForm);
@@ -197,6 +209,11 @@ const movieSearchByInput = () => {
         const searchMatchList = document.querySelector(".list");
 
         for (let i = 0; i < movies.results.length; i++) {
+
+            if (movieSearchByInput === "") {
+                searchMatchList.innerHTML = "";
+            }
+
             if (movies.results[i].title.toLowerCase().startsWith(userInput.toLowerCase()) && userInput.value !== "") {
                 //creates a list item that holds the matched movie title from the API array
                 let listItem = document.createElement("li");
@@ -228,21 +245,6 @@ const movieSearchByInput = () => {
 
 };
 
-
-/////////////////Gets a movie from the API, takes a string movie title as an input, returns 1 movie object////////////////
-const getMovie = async (title) => {
-    const url = `http://www.omdbapi.com/?apikey=${OMDB_KEY}&t=${title}`;
-    const options = {
-        "method": "GET",
-        "headers": {}
-    };
-
-    const response = await fetch(url, options);
-    const movie = await response.json();
-    return movie;
-};
-
-
 //removes anything that is being displayed in the move-display div
 //runs before prepending/displaying any new data to movie-display div
 const clearMovieDisplay = () => {
@@ -254,24 +256,6 @@ const clearBigMovieDisplay = () => {
 };
 
 
-////validates add Movies form input, if valid, calls the searchMovieAndAdd function to try and add the movie to the local DB
-const inputValidation = () => {
-    addMovieButton.addEventListener("click", async (e) => {
-        e.preventDefault();
-        if (userRatingInput.value === "Rating") {
-            userRatingInput.setAttribute("style", "border: 2px solid red");
-            userRatingInput.placeholder = "Selection Required";
-            return;
-        } else if (userTitleInput.value === "") {
-            userTitleInput.setAttribute("style", "border: 2px solid red");
-            userTitleInput.placeholder = "Input Required";
-            return;
-        } else {
-            searchMovieAndAdd();
-        }
-
-    });
-};
 
 
 const getlocalMovieDb = async () => {
@@ -319,15 +303,14 @@ const searchMovieByTitle = async (title) => {
 
 ////////////////takes in a Movie object as an argument, then posts the object to the local DB, then renders in on screen////////////
 const postMovie = async (movie) => {
-    // try {
-    //     //validates movie isn't already in the database
-    //     const searchResult = await searchMovieByTitle(movie.Title);
-    //     if (searchResult.length > 0) {
-    //         //movie already exists
-    //         // throw error
-    //         throw new Error("Movie already exists in the database");
-    //     }
-
+    try {
+        //validates movie isn't already in the database
+        const searchResult = await searchMovieByTitle(movie.Title);
+        if (searchResult.length > 0) {
+            //movie already exists
+            // throw error
+            throw new Error("Movie already exists in the database");
+        }
     const url = `http://localhost:3000/movies`;
     const body = movie;
     const options = {
@@ -342,10 +325,10 @@ const postMovie = async (movie) => {
     renderMovie(newId);
     displayBigMovie(newId);
     return newId;
-    // } catch (error) {
-    //     console.log(error);
-    //     return null;
-    // }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 };
 
 
@@ -393,7 +376,7 @@ const renderModal = (movie, action) => {
                 <div class="d-flex flex-column gap-2 mb-2" style="color: black;">
                     <label for="Ratings">
                         Rating
-                        <input required type="number" name="Ratings" id="Ratings" min="0" max="5" value="${movie.Ratings}" />
+                        <input required type="number" name="Ratings" id="Ratings" min="0" max="5" value="${movie.Rating}" />
                     </label>
                     <label for="id">
                         <input hidden required type="number" name="id" id="id" value="${movie.id}" />
@@ -401,6 +384,7 @@ const renderModal = (movie, action) => {
                     <label><input type="checkbox" name="genres" value="Action">Action </label>
                     <label><input type="checkbox" name="genres" value="Adventure">Adventure</label>
                     <label><input type="checkbox" name="genres" value="Animation">Animation</label>
+                    <label><input type="checkbox" name="genres" value="Family">Family</label>
                     <label><input type="checkbox" name="genres" value="Comedy">Comedy</label>
                     <label> <input type="checkbox" name="genres" value="Horror">Horror</label>
                     <label> <input type="checkbox" name="genres" value="Romance">Romance</label>
@@ -408,7 +392,7 @@ const renderModal = (movie, action) => {
                     <label> <input type="checkbox" name="genres" value="Drama">Drama</label>
                     <label> <input type="checkbox" name="genres" value="Fantasy">Fantasy</label>
                     <label> <input type="checkbox" name="genres" value="War">War</label>
-                    <label> <input type="checkbox" name="genres" value="Sci-Fi">Sci-Fi</label>
+                    <label> <input type="checkbox" name="genres" value="Science Fiction">Science Fiction</label>
                     <label> <input type="checkbox" name="genres" value="Thriller">Thriller</label>
                     <label> <input type="checkbox" name="genres" value="Biography">Biography</label>
                     <label> <input type="checkbox" name="genres" value="Sport">Sport</label>
@@ -481,7 +465,7 @@ const renderModal = (movie, action) => {
 
         let updatedMovieObj = {
             id: `${movieId}`,
-            Ratings: `${newRating}`,
+            Rating: `${newRating}`,
             Genre: `${newGenres}`
         };
 
@@ -508,21 +492,21 @@ const renderMovie = (movie) => {
 
 
 //determines how many stars should be included in movie card html based on the rating stored in the movie object
-    if (Number(movie.Ratings) < 2) {
+    if (Number(movie.Rating) < 2) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>`;
-    } else if (Number(movie.Ratings) < 3) {
+    } else if (Number(movie.Rating) < 3) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>`;
-    } else if (Number(movie.Ratings) < 4) {
+    } else if (Number(movie.Rating) < 4) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>`;
-    } else if (Number(movie.Ratings) < 5) {
+    } else if (Number(movie.Rating) < 5) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>`;
-    } else if (Number(movie.Ratings) < 6) {
+    } else if (Number(movie.Rating) < 6) {
         ratingHtml = `<a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
                       <a  href="#" class="star-icon">&#9733;</a>
@@ -540,6 +524,9 @@ const renderMovie = (movie) => {
                   <div class="card-header">
                   <h3 class="card-title">${movie.Title}</h3>
                   </div>
+                  <div class="star-rating">
+               ${ratingHtml}
+              </div>
                   <div class="card-call-to-action movie-card-actions-menu">
                 <button class="card-btn primary movie-card-action" data-action="edit">Edit</button>
                 <button class="card-btn movie-card-action" data-action="delete">Delete</button>
@@ -593,17 +580,21 @@ let defaultBigMovie = async () => {
 // called in displayActionMovies, displayAdventureMovies ect.....
 let displayBigMovie = async (movie) => {
     // bigMovieDisplay.setAttribute("style", `background: url('https://www.youtube.com/watch?v=${movie.Trailer}'); background-repeat: no-repeat;`);
-    let castDetails = document.createElement("div");
     bigMovieDisplay.innerHTML = `
              <p class="d-flex flex-column display-3 fw-bolder movie-title" style="color: white;">${movie.Title}</p>
          <div class="d-flex gap-4" style="color: white;">
+         <p><span class="fw-bold" style="color: white;">Rating:</span> ${movie.Rating} / 5 &#9733;</p>
           <p><span class="fw-bold" style="color: white;">Released:</span> ${movie.Year.substring(0, movie.Year.indexOf("-"))}</p>
           <p><span class="fw-bold" style="color: white;">Genre:</span> ${movie.Genre}</p>
           <p><span class="fw-bold" style="color: white;">Runtime:</span> ${movie.Runtime} mins</p></div>
         <div class="my-2 text wrap w-50" style="color: white;">${movie.Overview}</div>
-        <button class="btn btn-outline-danger">View More Details</button>
+        <button class="btn btn-outline-danger">View Trailor</button>
     `;
 
+    const movieTrailorBtn = bigMovieDisplay.querySelector(".btn-outline-danger");
+    movieTrailorBtn.addEventListener("click", async (e) => {
+        console.log("Clicked tailor button")
+    });
     }
 
 
@@ -843,7 +834,6 @@ const displayAllMovies = () => {
 
 export {
     onPageLoad,
-    getMovie,
     getlocalMovieDb,
     getLocalMovie,
     renderMovie,
