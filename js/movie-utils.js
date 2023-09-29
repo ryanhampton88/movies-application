@@ -33,8 +33,8 @@ const onPageLoad = async () => {
             renderMovie(movie);
         });
         defaultBigMovie();
-    })
-}
+    });
+};
 
 
 /////////////////Gets a movie from the API, takes a string movie title as an input, returns 1 movie object////////////////
@@ -82,7 +82,7 @@ const inputValidation = () => {
 };
 
 
-/////////takes user input and appends to URL, makes get request, if valid, grabs movie data, and passes it through postMovie to add it to the local DB /////////
+/////////takes user input to add Movie Title query to URL, makes get request, if valid, grabs movie data, and passes it through postMovie to add it to the local DB /////////
 const searchMovieAndAdd = async () => {
     let newTitle = userTitleInput.value;
     let newRating = userRatingInput.value;
@@ -92,10 +92,19 @@ const searchMovieAndAdd = async () => {
 
     let movie = await getMovie(strToStandardCase(newTitle));
 
+    let movieGenre = movie.Genre;
+    let splGenres = movieGenre.split(",");
+    for (let i = 0; i < splGenres.length; i++) {
+        splGenres[i] = splGenres[i].trim();
+    }
+    splGenres = splGenres.join(",");
+    console.log(splGenres);
+
+
     let newMovie = {
         "Title": `${movie.Title}`,
         "Ratings": `${newRating}`,
-        "Genre": `${movie.Genre}`,
+        "Genre": `${splGenres}`,
         "Plot": `${movie.Plot}`,
         "Poster": `${movie.Poster}`,
         "Year": `${movie.Year}`,
@@ -216,7 +225,7 @@ const patchMovie = async (movie) => {
         return newId;
 
     } catch (error) {
-        console.log(error);
+        alert(error);
         return null;
     }
 };
@@ -229,6 +238,7 @@ const renderModal = (movie, action) => {
     let splitGenres = existingGenres.split(",");
     console.log(splitGenres);
     modal.classList.add("modal");
+
     modal.innerHTML = `
         <div class="modal-bg"></div>
         <div class="modal-content" style="background-color: white;">
@@ -246,12 +256,21 @@ const renderModal = (movie, action) => {
                     <label for="id">
                         <input hidden required type="number" name="id" id="id" value="${movie.id}" />
                     </label>
-                    <label><input type="checkbox" name="genres" value="Action"> Action </label>
-                    <label><input type="checkbox" name="genres" value="Adventure"> Adventure</label>
-                    <label><input type="checkbox" name="genres" value="Comedy"> Comedy</label>
-                    <label> <input type="checkbox" name="genres" value="Horror"> Horror</label>
-                    <label> <input type="checkbox" name="genres" value="Romance"> Romance</label>
-                    <label> <input type="checkbox" name="genres" value="Documentary"> Documentary</label>
+                    <label><input type="checkbox" name="genres" value="Action">Action </label>
+                    <label><input type="checkbox" name="genres" value="Adventure">Adventure</label>
+                    <label><input type="checkbox" name="genres" value="Animation">Animation</label>
+                    <label><input type="checkbox" name="genres" value="Comedy">Comedy</label>
+                    <label> <input type="checkbox" name="genres" value="Horror">Horror</label>
+                    <label> <input type="checkbox" name="genres" value="Romance">Romance</label>
+                    <label> <input type="checkbox" name="genres" value="Documentary">Documentary</label>
+                    <label> <input type="checkbox" name="genres" value="Drama">Drama</label>
+                    <label> <input type="checkbox" name="genres" value="Fantasy">Fantasy</label>
+                    <label> <input type="checkbox" name="genres" value="War">War</label>
+                    <label> <input type="checkbox" name="genres" value="Sci-Fi">Sci-Fi</label>
+                    <label> <input type="checkbox" name="genres" value="Thriller">Thriller</label>
+                    <label> <input type="checkbox" name="genres" value="Biography">Biography</label>
+                    <label> <input type="checkbox" name="genres" value="Sport">Sport</label>
+                    <label> <input type="checkbox" name="genres" value="Mystery">Mystery</label>
                     </div>
                     <div class="modal-form-actions">
                         <button type="submit" class="btn btn-cta btn-secondary" data-action="${action}">${action}</button>
@@ -261,6 +280,15 @@ const renderModal = (movie, action) => {
             </div>
         </div>
     `;
+
+    //checks the checkboxes for the genres that the movie already has
+    let checkboxes = modal.querySelectorAll("input[type='checkbox']");
+    checkboxes.forEach((checkbox) => {
+        if (splitGenres.includes(checkbox.value)) {
+            checkbox.checked = true;
+        }
+    });
+
 
     //nodes from the modal for event listeners
     const modalForm = modal.querySelector("#movie-form");
@@ -292,14 +320,16 @@ const renderModal = (movie, action) => {
         let movieId = document.getElementById("id").value;
         let newRating = document.getElementById("Ratings").value;
 
-        //loops through the checkboxes, if they are checked, looks to see if the movie already has those genres, if it does not, adds the new genres.
+        //loops through the checkboxes, if they are checked, looks to see if the movie already has those genres, if it does not, adds the new genres. prevents duplicates //if the value is not checked, and the movie already has that genre, removes the genre from the movie object
         for (let i = 0; i < modalForm.genres.length; i++) {
             if (modalForm.genres[i].checked) {
-                modalForm.genres[i].value
-                if (splitGenres.includes(modalForm.genres[i].value)) {
-                    continue;
-                } else if (!splitGenres.includes(modalForm.genres[i].value)) {
+                modalForm.genres[i].value;
+                if (!splitGenres.includes(modalForm.genres[i].value)) {
                     splitGenres.push(modalForm.genres[i].value);
+                }
+            } else if(!modalForm.genres[i].checked) {
+                if (splitGenres.includes(modalForm.genres[i].value)) {
+                    splitGenres.splice(splitGenres.indexOf(modalForm.genres[i].value), 1);
                 }
             }
         }
