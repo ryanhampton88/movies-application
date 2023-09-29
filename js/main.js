@@ -12,6 +12,7 @@ import {
 } from "./movie-utils.js";
 
 
+
 //////// MAIN METHOD/////////
 (async () => {
 
@@ -32,6 +33,8 @@ import {
     displayRomanceMovies();
     displayDocumentaryMovies();
     displayAllMovies();
+
+
 
 
 })();

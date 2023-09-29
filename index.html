@@ -65,27 +65,25 @@
 
               <!--        SEARCH          -->
               <div class="d-flex flex-column gap-2">
-                <form class="d-flex" role="search">
-                  <input class="form-control me-2" id="movie-search" type="search" placeholder="Search current movies.."
+                <form class="d-flex flex-column" role="search">
+                  <input class="form-control me-2" id="movie-search" type="search" placeholder="Add a movie..."
                          aria-label="Search">
-<!--                  <button class="btn btn-outline-danger" type="submit">Search</button>-->
+                  <ul class="list d-flex flex-column" id="autocomplete-list"></ul>
                 </form>
                 <!--        ADD MOVIE FORM          -->
-                <form class="d-flex gap-2" id="add-movie-form">
-                  <input required class="form-control" id="user-title" type="text" placeholder="Enter Title..">
-                  <!--                  <input required class="form-control me-2" id="user-rating" type="number" min="0" max="5"-->
-                  <!--                         placeholder="Rating..">-->
-                  <select required class="form-select" id="user-rating" aria-label="Rating">
-                    <option selected>Rating</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                  <button class="btn btn-cta btn-outline-danger w-100" id="add-movie-button" type="submit">Add Movie
-                  </button>
-                </form>
+<!--                <form class="d-flex gap-2" id="add-movie-form">-->
+<!--                  <input required class="form-control" id="user-title" type="text" placeholder="Enter Title..">-->
+<!--                  <select required class="form-select" id="user-rating" aria-label="Rating">-->
+<!--                    <option selected>Rating</option>-->
+<!--                    <option value="1">1</option>-->
+<!--                    <option value="2">2</option>-->
+<!--                    <option value="3">3</option>-->
+<!--                    <option value="4">4</option>-->
+<!--                    <option value="5">5</option>-->
+<!--                  </select>-->
+<!--                  <button class="btn btn-cta btn-outline-danger w-100" id="add-movie-button" type="submit">Add Movie-->
+<!--                  </button>-->
+<!--                </form>-->
               </div>
             </div>
           </div>
@@ -123,5 +121,5 @@
         </footer>
       </div>
     </div>
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/script.js"></script>
 </body>

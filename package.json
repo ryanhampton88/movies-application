@@ -2,9 +2,9 @@
   "name": "movies-application",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "script.js",
   "scripts": {
-    "start": "json-server -d1200 --watch data/movies.json"
+    "start": "json-server -d1200 --watch data/tmdb.json"
   },
   "keywords": [],
   "author": "",

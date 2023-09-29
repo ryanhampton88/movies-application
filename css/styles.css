@@ -23,6 +23,31 @@ ul {
     gap: 20px;
 }
 
+#autocomplete-list {
+    list-style: none;
+    position: absolute;
+    z-index: 4;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 5px;
+    max-width: 200px;
+}
+.list {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 0 0 5px 5px;
+    position: relative;
+    z-index: 3;
+    top: 64px;
+}
+.list-items {
+    padding: 10px 5px;
+}
+.list-items:hover {
+    background-color: #dddddd;
+}
+
 .nav-genre {
     color: white;
     font-family: Bebas Neue;
