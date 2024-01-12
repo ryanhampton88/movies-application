@@ -133,7 +133,7 @@ const searchMovieAndAdd = async () => {
 
 
 const getlocalMovieDb = async () => {
-    const url = `http://localhost:3000/movies`;
+    const url = `http://localhost:8080/movies`;
     const options = {
         "method": "GET",
         "headers": {}
@@ -147,7 +147,7 @@ const getlocalMovieDb = async () => {
 /////////////////Returns all movies from our local DB, returns the array of movie objects////////////////
 const getLocalMovie = async () => {
     movieDisplay.appendChild(loadingScreen);
-    const url = `http://localhost:3000/movies`;
+    const url = `http://localhost:8080/movies`;
     const options = {
         "method": "GET",
         "headers": {}
@@ -163,7 +163,7 @@ const getLocalMovie = async () => {
 
 ///////checks to see if movie already exists in DB before posting it to DB///////////
 const searchMovieByTitle = async (title) => {
-    const url = `http://localhost:3000/movies?Title=${title}`;
+    const url = `http://localhost:8080/movies?Title=${title}`;
     const options = {
         method: "GET",
         headers: {
@@ -186,7 +186,7 @@ const postMovie = async (movie) => {
             throw new Error("Movie already exists in the database");
         }
 
-        const url = `http://localhost:3000/movies`;
+        const url = `http://localhost:8080/movies`;
         const body = movie;
         const options = {
             method: "POST",
@@ -210,7 +210,7 @@ const postMovie = async (movie) => {
 //updates movie object properties in the local DB after user submits an edit
 const patchMovie = async (movie) => {
     try {
-        const url = `http://localhost:3000/movies/${movie.id}`;
+        const url = `http://localhost:8080/movies/${movie.id}`;
         const body = movie;
         const options = {
             method: "PATCH",
